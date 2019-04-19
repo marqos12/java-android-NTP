@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -15,7 +15,7 @@
         tools:layout_editor_absoluteY="283dp">
 
         <ScrollView
-            android:id="@+id/scrollView"
+            android:id="@+id/main"
             android:layout_width="395dp"
             android:layout_height="715dp"
             tools:layout_editor_absoluteX="8dp"
@@ -29,7 +29,7 @@
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="336dp"
-                    android:layout_height="103dp"
+                    android:layout_height="wrap_content"
                     android:text="TextView"
                     tools:layout_editor_absoluteX="44dp"
                     tools:layout_editor_absoluteY="44dp" />
