@@ -1,29 +1,54 @@
 package studia.quiz.model;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
-    private Long id;
+    private Integer id;
     private String category;
-    private Long idSubject;
+    private String idSubject;
     private String text;
     private String code;
     private String image;
     private List<Answer> answers;
 
-    public Long getId() {
+    public Question(JSONObject jsonObject)throws JSONException {
+        this.id = (Integer) jsonObject.get("id");
+       // this.category = (String) jsonObject.get("category");
+        this.idSubject = (String) jsonObject.get("idSubject");
+        this.text = (String) jsonObject.get("text");
+        if (jsonObject.get("code").toString()!="null")
+            this.code = (String) jsonObject.get("code");
+        if (jsonObject.get("image").toString()!="null")
+            this.image = (String) jsonObject.get("image");
+        JSONArray jsonArray = (JSONArray) jsonObject.get("answers");
+        this.answers = new ArrayList<Answer>();
+        this.answers.add(new Answer(jsonArray.getJSONObject(0)));
+        this.answers.add(new Answer(jsonArray.getJSONObject(1)));
+        this.answers.add(new Answer(jsonArray.getJSONObject(2)));
+        this.answers.add(new Answer(jsonArray.getJSONObject(3)));
+    }
+
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getIdSubject() {
+    public String getIdSubject() {
         return idSubject;
     }
 
-    public void setIdSubject(Long idSubject) {
+    public void setIdSubject(String idSubject) {
         this.idSubject = idSubject;
     }
 

@@ -1,10 +1,25 @@
 package studia.quiz.model;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Answer {
-    private Long id;
+    private Integer id;
     private String text;
-    private Long idQuestion;
+    private String idQuestion;
     private String status;
+
+
+    Answer(JSONObject jsonObject)throws JSONException {
+        this.id = (Integer) jsonObject.get("id");
+        this.text = (String) jsonObject.get("text");
+        this.idQuestion = (String) jsonObject.get("idQuestion");
+
+        if (jsonObject.get("status").toString()!="null")
+        this.status = (String) jsonObject.get("status");
+    }
 
     public String getText() {
         return text;
@@ -14,19 +29,19 @@ public class Answer {
         this.text = text;
     }
 
-    public Long getIdQuestion() {
+    public String getIdQuestion() {
         return idQuestion;
     }
 
-    public void setIdQuestion(Long idQuestion) {
+    public void setIdQuestion(String idQuestion) {
         this.idQuestion = idQuestion;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

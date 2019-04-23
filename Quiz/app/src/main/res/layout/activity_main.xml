@@ -4,77 +4,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    >
+    android:background="@color/background"
+    tools:context=".MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:layout_editor_absoluteX="63dp"
-        tools:layout_editor_absoluteY="283dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
-        <ScrollView
-            android:id="@+id/main"
-            android:layout_width="395dp"
-            android:layout_height="715dp"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginBottom="27dp"
+            android:contentDescription="@string/logo"
+            android:src="@drawable/logo5_600"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp">
+            tools:layout_editor_absoluteY="16dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/quiz1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/imageView"
+            android:background="@drawable/quizcard">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="@string/quiz1"
+                android:textColor="@color/textWhite"
+                android:textSize="30sp"
+                android:layout_centerHorizontal="true" />
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="336dp"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    tools:layout_editor_absoluteX="44dp"
-                    tools:layout_editor_absoluteY="44dp" />
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView2"
+                android:layout_marginTop="15dp"
+                android:background="@color/buttonBackgroundGray"
+                android:text="@string/demo"
+                android:drawableEnd="@drawable/icons8_right_24"
+                android:layout_centerHorizontal="true"
+                />
+        </RelativeLayout>
 
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="307dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
-                    tools:layout_editor_absoluteX="63dp">
+        <RelativeLayout
+            android:id="@+id/quiz2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/quiz1"
+            android:background="@drawable/quizcard">
 
-                    <RadioButton
-                        android:id="@+id/radioButton4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="RadioButton" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/quiz2"
+                android:textAlignment="center"
+                android:textColor="@color/textWhite"
+                android:textSize="30sp"
+                android:layout_centerHorizontal="true" />
 
-                    <RadioButton
-                        android:id="@+id/radioButton3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="RadioButton" />
+            <Button
+                android:id="@+id/button5"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView3"
+                android:layout_marginTop="15dp"
+                android:background="@color/buttonBackgroundGray"
+                android:text="@string/demo"
+                android:drawableEnd="@drawable/icons8_right_24"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
 
-                    <RadioButton
-                        android:id="@+id/radioButton2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="RadioButton" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="RadioButton"
-                        tools:layout_editor_absoluteX="63dp"
-                        tools:layout_editor_absoluteY="229dp" />
-
-                </RadioGroup>
-            </LinearLayout>
-        </ScrollView>
 
     </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Quiz</string>
+    <string name="logo">logo</string>
+    <string name="quiz1">Technologie Sieci WEB</string>
+    <string name="quiz2">Programowanie \nw języku Java</string>
+    <string name="demo">Rozwiąż test demo</string>
 </resources>

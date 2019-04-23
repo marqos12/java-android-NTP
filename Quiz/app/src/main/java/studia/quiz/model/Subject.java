@@ -1,5 +1,8 @@
 package studia.quiz.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Subject {
     private Long id;
     private String name;
@@ -15,7 +18,28 @@ public class Subject {
     private String description;
     private String subject;
 
-    public Long getId() {
+    public Subject(JSONObject jsonObject)throws JSONException {
+        this.id = (Long) jsonObject.get("id");
+        this.name = (String) jsonObject.get("name");
+        this.idAuthor = (Long) jsonObject.get("idAuthor");
+        this.noQuestions = (Long) jsonObject.get("noQuestions");
+        this.multipleChoice = (Boolean) jsonObject.get("multipleChoice");
+        this.separatePage = (Boolean) jsonObject.get("separatePage");
+        this.canBack = (Boolean) jsonObject.get("canBack");
+        this.randomize = (Boolean) jsonObject.get("randomize");
+        this.limitedTime = (Boolean) jsonObject.get("limitedTime");
+        this.time = (Long) jsonObject.get("time");
+        this.course = (String) jsonObject.get("course");
+        this.description = (String) jsonObject.get("description");
+        this.subject = (String) jsonObject.get("subject");
+
+
+
+
+    }
+
+
+        public Long getId() {
         return id;
     }
 
