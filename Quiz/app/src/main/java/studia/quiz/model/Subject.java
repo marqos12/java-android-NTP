@@ -4,33 +4,34 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Subject {
-    private Long id;
+    private Integer id;
     private String name;
-    private Long idAuthor;
-    private Long noQuestions;
-    private Boolean multipleChoice;
-    private Boolean separatePage;
-    private Boolean canBack;
-    private Boolean randomize;
-    private Boolean limitedTime;
-    private Long time;
+    private Integer idAuthor;
+    private Integer noQuestions;
+    private Integer multipleChoice;
+    private Integer separatePage;
+    private Integer canBack;
+    private Integer randomize;
+    private Integer limitedTime;
+    private Integer time;
     private String course;
     private String description;
     private String subject;
 
     public Subject(JSONObject jsonObject)throws JSONException {
-        this.id = (Long) jsonObject.get("id");
+        this.id = (Integer) jsonObject.get("id");
         this.name = (String) jsonObject.get("name");
-        this.idAuthor = (Long) jsonObject.get("idAuthor");
-        this.noQuestions = (Long) jsonObject.get("noQuestions");
-        this.multipleChoice = (Boolean) jsonObject.get("multipleChoice");
-        this.separatePage = (Boolean) jsonObject.get("separatePage");
-        this.canBack = (Boolean) jsonObject.get("canBack");
-        this.randomize = (Boolean) jsonObject.get("randomize");
-        this.limitedTime = (Boolean) jsonObject.get("limitedTime");
-        this.time = (Long) jsonObject.get("time");
+        this.idAuthor = (Integer) jsonObject.get("idAuthor");
+        this.noQuestions = (Integer) jsonObject.get("noQuestions");
+        this.multipleChoice = (Integer) jsonObject.get("multipleChoice");
+        this.separatePage = (Integer) jsonObject.get("separatePage");
+        this.canBack = (Integer) jsonObject.get("canBack");
+        this.randomize = (Integer) jsonObject.get("randomize");
+        this.limitedTime = (Integer) jsonObject.get("limitedTime");
+        this.time = (Integer) jsonObject.get("time");
         this.course = (String) jsonObject.get("course");
-        this.description = (String) jsonObject.get("description");
+        if (jsonObject.get("description").toString()!="null")
+            this.description = (String) jsonObject.get("description");
         this.subject = (String) jsonObject.get("subject");
 
 
@@ -39,11 +40,11 @@ public class Subject {
     }
 
 
-        public Long getId() {
+        public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -55,67 +56,67 @@ public class Subject {
         this.name = name;
     }
 
-    public Long getIdAuthor() {
+    public Integer getIdAuthor() {
         return idAuthor;
     }
 
-    public void setIdAuthor(Long idAuthor) {
+    public void setIdAuthor(Integer idAuthor) {
         this.idAuthor = idAuthor;
     }
 
-    public Long getNoQuestions() {
+    public Integer getNoQuestions() {
         return noQuestions;
     }
 
-    public void setNoQuestions(Long noQuestions) {
+    public void setNoQuestions(Integer noQuestions) {
         this.noQuestions = noQuestions;
     }
 
-    public Boolean getMultipleChoice() {
+    public Integer getMultipleChoice() {
         return multipleChoice;
     }
 
-    public void setMultipleChoice(Boolean multipleChoice) {
+    public void setMultipleChoice(Integer multipleChoice) {
         this.multipleChoice = multipleChoice;
     }
 
-    public Boolean getSeparatePage() {
+    public Integer getSeparatePage() {
         return separatePage;
     }
 
-    public void setSeparatePage(Boolean separatePage) {
+    public void setSeparatePage(Integer separatePage) {
         this.separatePage = separatePage;
     }
 
-    public Boolean getCanBack() {
+    public Integer getCanBack() {
         return canBack;
     }
 
-    public void setCanBack(Boolean canBack) {
+    public void setCanBack(Integer canBack) {
         this.canBack = canBack;
     }
 
-    public Boolean getRandomize() {
+    public Integer getRandomize() {
         return randomize;
     }
 
-    public void setRandomize(Boolean randomize) {
+    public void setRandomize(Integer randomize) {
         this.randomize = randomize;
     }
 
-    public Boolean getLimitedTime() {
+    public Integer getLimitedTime() {
         return limitedTime;
     }
 
-    public void setLimitedTime(Boolean limitedTime) {
+    public void setLimitedTime(Integer limitedTime) {
         this.limitedTime = limitedTime;
     }
 
-    public Long getTime() {
+    public Integer getTime() {
         return time;
     }
 
-    public void setTime(Long time) {
+    public void setTime(Integer time) {
         this.time = time;
     }
 
