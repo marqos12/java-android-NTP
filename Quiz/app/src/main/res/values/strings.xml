@@ -13,8 +13,9 @@
     <string name="invite">Zapraszamy!</string>
     <string name="toTest">Przejdź do testu</string>
     <string name="back">Powrót</string>
-    <string name="nextQuestion">Następne pytanie</string>
-    <string name="prevQuestion">Poprzednie pytanie</string>
+    <string name="nextQuestion">Dalej</string>
+    <string name="prevQuestion">Poprzednie</string>
+    <string name="acceptAnswers">ZAKOŃCZ</string>
 
 
     <string name="test">%d</string>

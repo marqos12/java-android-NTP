@@ -54,6 +54,7 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(MainActivity.this, Test_demo_begin.class);
                 intent.putExtra("name", "web");
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -65,6 +66,7 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent(MainActivity.this, Test_demo_begin.class);
                 intent.putExtra("name", "java");
                 startActivity(intent);
+                finish();
             }
         });
 

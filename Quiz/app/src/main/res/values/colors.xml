@@ -8,4 +8,6 @@
     <color name="textWhite">#FFFFFF</color>
     <color name="buttonBackgroundGray">#707070</color>
     <color name="textShadow">#505050</color>
+    <color name="codeBackground">#e2e2e2</color>
+    <color name="codeBorder">#000</color>
 </resources>

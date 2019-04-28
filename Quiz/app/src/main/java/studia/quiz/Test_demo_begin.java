@@ -38,6 +38,7 @@ public class Test_demo_begin extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Test_demo_begin.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -48,6 +49,7 @@ public class Test_demo_begin extends AppCompatActivity {
                 Intent intent = new Intent(Test_demo_begin.this, Test_demo.class);
                 intent.putExtra("id", id);
                 startActivity(intent);
+                finish();
             }
         });
 

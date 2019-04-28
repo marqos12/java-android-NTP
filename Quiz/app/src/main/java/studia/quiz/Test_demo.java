@@ -1,8 +1,11 @@
 package studia.quiz;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -32,6 +36,7 @@ import com.squareup.okhttp.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -44,9 +49,12 @@ public class Test_demo extends AppCompatActivity {
     TextView questionText;
     RadioGroup radio;
     Button buttonNext;
+    Button buttonPrev;
+    Button buttonAccept;
     List<RelativeLayout> questions=new ArrayList<RelativeLayout>();
     RelativeLayout mainRelativeLayout;
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
+    Integer questionIndex = Integer.valueOf(0);
     public ProgressDialog progress;
 
     private GestureDetector myGestureDectector;
@@ -62,7 +70,7 @@ public class Test_demo extends AppCompatActivity {
 
 
         AndroidGestureDectector androidGestureDectector = new AndroidGestureDectector();
-       // myGestureDectector = new GestureDetector(Test_demo.this, androidGestureDectector);
+        myGestureDectector = new GestureDetector(Test_demo.this, androidGestureDectector);
 
         findViewById(R.id.main).setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -75,18 +83,28 @@ public class Test_demo extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("quiz","klikło");
-                RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) allRLayouts.get(0).getLayoutParams());
-                params.setMargins(-Resources.getSystem().getDisplayMetrics().widthPixels,0,0,0);
-                allRLayouts.get(0).setLayoutParams(params);
-                //((RelativeLayout.LayoutParams) allRLayouts.get(0).getLayoutParams()).setMarginStart(-Resources.getSystem().getDisplayMetrics().widthPixels);
-                //((RelativeLayout.LayoutParams) allRLayouts.get(1).getLayoutParams()).setMarginStart(0);
-                RelativeLayout.LayoutParams params2 = ((RelativeLayout.LayoutParams) allRLayouts.get(1).getLayoutParams());
-                params2.setMargins(0,0,0,0);
-                allRLayouts.get(1).setLayoutParams(params2);
-
+                nextQuestion();
             }
         });
+
+        buttonPrev = findViewById(R.id.prevBtn);
+        buttonPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prevQuestion();
+            }
+        });
+
+
+        buttonAccept = findViewById(R.id.accept);
+        buttonAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("quiz","klikło accept");
+            }
+        });
+
+
 
         mainRelativeLayout = findViewById(R.id.mainRelativeLayout);
 
@@ -145,13 +163,14 @@ public class Test_demo extends AppCompatActivity {
             }
         }
 
+        @SuppressLint("ResourceAsColor")
         @Override
         protected void onPostExecute(List<Question>questions)
         {
             Integer i = new Integer(1);
             for(Question question: questions){
                 RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
-
+                    relativeLayout.setId(View.generateViewId());
                     RelativeLayout.LayoutParams rparam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
                     rparam.setMargins(Resources.getSystem().getDisplayMetrics().widthPixels,0,0,0);
                 relativeLayout.setLayoutParams(rparam);
@@ -166,14 +185,15 @@ public class Test_demo extends AppCompatActivity {
                     questionNumber.setId(View.generateViewId());
                 relativeLayout.addView(questionNumber);
 
+
                     //Log.d("quiz",getApplicationContext().getString(R.string.test,buttonNext.getId()));
 
                     TextView questionText = new TextView(getApplicationContext());
-                    RelativeLayout.LayoutParams paramsText = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    RelativeLayout.LayoutParams paramsText = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                     paramsText.addRule(RelativeLayout.BELOW,questionNumber.getId());
                     questionText.setLayoutParams(paramsText);
 
-                    questionText.setText(questions.get(0).getText());
+                    questionText.setText(questions.get(i-1).getText());
                     questionText.setTextSize(16);
                     //questionText.setBackgroundResource(R.drawable.quizcard);
                     questionText.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.quizcard));
@@ -181,10 +201,13 @@ public class Test_demo extends AppCompatActivity {
                     questionText.setId(View.generateViewId());
                 relativeLayout.addView(questionText);
 
+
+
+
                     RadioGroup radioGroup = new RadioGroup(getApplicationContext());
                     RelativeLayout.LayoutParams paramsText2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
                     paramsText2.addRule(RelativeLayout.BELOW,questionText.getId());
-                    paramsText2.setMargins(0,60,0,100);
+                    paramsText2.setMargins(0,60,0,60);
                     radioGroup.setLayoutParams(paramsText2);
                     radioGroup.setId(View.generateViewId());
 
@@ -203,72 +226,58 @@ public class Test_demo extends AppCompatActivity {
 
                 relativeLayout.addView(radioGroup);
 
+
+                if(questions.get(i-1).getCode()!=null){
+                    TextView questionCode = new TextView(getApplicationContext());
+                    RelativeLayout.LayoutParams paramsCode = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    paramsCode.addRule(RelativeLayout.BELOW,questionText.getId());
+                    paramsCode.setMargins(0,10,0,0);
+                    questionCode.setLayoutParams(paramsCode);
+                    questionCode.setTextColor(getResources().getColor(R.color.codeBorder));
+                    questionCode.setText(questions.get(i-1).getCode());
+                    questionCode.setTextSize(14);
+                    questionCode.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.codecard));
+                    questionCode.setId(View.generateViewId());
+                    relativeLayout.addView(questionCode);
+
+                    paramsText2.addRule(RelativeLayout.BELOW,questionCode.getId());
+                    radioGroup.setLayoutParams(paramsText2);
+                }
+
+                if(questions.get(i-1).getImage()!=null){
+                    ImageView questionImage = new ImageView(getApplicationContext());
+                    RelativeLayout.LayoutParams paramsImage = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    paramsImage.addRule(RelativeLayout.BELOW,questionText.getId());
+                    paramsImage.setMargins(0,10,0,0);
+                    questionImage.setLayoutParams(paramsImage);
+                    /*questionCode.setTextColor(getResources().getColor(R.color.codeBorder));
+                    questionCode.setText(questions.get(i-1).getCode());
+                    questionCode.setTextSize(14);*/
+                    questionImage.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.codecard));
+                    questionImage.setId(View.generateViewId());
+                    new DownloadImageTask(questionImage).execute(questions.get(i-1).getImage());
+                    relativeLayout.addView(questionImage);
+
+                    paramsText2.addRule(RelativeLayout.BELOW,questionImage.getId());
+                    radioGroup.setLayoutParams(paramsText2);
+                }
+
+
                 allRLayouts.add(relativeLayout);
                 mainRelativeLayout.addView(relativeLayout );
                 i++;
             }
 
             ((RelativeLayout.LayoutParams) allRLayouts.get(0).getLayoutParams()).setMargins(0,0,0,0);
-            
+
+            RelativeLayout.LayoutParams params3 = ((RelativeLayout.LayoutParams) buttonNext.getLayoutParams());
+
+            params3.addRule(RelativeLayout.BELOW,allRLayouts.get(questionIndex).getId());
+            buttonNext.setLayoutParams(params3);
+
             progress.dismiss();
         }
     }
-/*
-        request();
-
-
-    }
-
-    void request(){
-        ///////////////////RESST////////////
-        String url = "https://marqos12.000webhostapp.com/api/question/demo/WAFQ/33";
-
-        RequestQueue ExampleRequestQueue = Volley.newRequestQueue(this);
-        StringRequest ExampleStringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                TextView textView = (TextView) findViewById(R.id.textView);
-                textView.setText(response);
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-                    textView.setText(jsonObject.toString());
-                    Question question =  new Question(jsonObject);
-                    textView.setText(question.getText());
-                    for(int i = 0 ; i < 4 ; i++){
-                        RadioButton radioButton = (RadioButton) radio.getChildAt(i);
-                        radioButton.setText(question.getAnswers().get(i).getText());
-
-                    }
-                }
-                catch (Exception e){
-                    Toast.makeText(Test_demo.this, "jebli", Toast.LENGTH_SHORT).show();
-                    Log.d("jebło",e.getMessage());
-                    request();
-                }
-            }
-        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                TextView textView = (TextView) findViewById(R.id.textView);
-                textView.setText("#jebło!");
-                Log.d("jebło",error.toString());
-                request();
-                //This code is executed if there is an error.
-            }
-        });
-        ExampleRequestQueue.add(ExampleStringRequest);
-
-    }
-*/
-
-
-
-
-
-
-
-
 
 
     class AndroidGestureDectector implements GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
@@ -328,14 +337,6 @@ public class Test_demo extends AppCompatActivity {
                 Log.d("Speed ", String.valueOf(v) + " pixels/second");
                 // gestureText.setText("w lewo");
             }
-            if (motionEvent.getY() < motionEvent1.getY()) {
-                Log.d("Gesture ", "Up to Down Scroll: " + motionEvent.getY() + " - " + motionEvent1.getY());
-                Log.d("Speed ", String.valueOf(v1) + " pixels/second");
-            }
-            if (motionEvent.getY() > motionEvent1.getY()) {
-                Log.d("Gesture ", "Down to Up Scroll: " + motionEvent.getY() + " - " + motionEvent1.getY());
-                Log.d("Speed ", String.valueOf(v1) + " pixels/second");
-            }
             return false;
         }
 
@@ -349,23 +350,81 @@ public class Test_demo extends AppCompatActivity {
         @Override
         public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
             //gestureText.setText("onFling");
+            Log.d("Gesture ", "Kupa gówna");
             if (motionEvent.getX() < motionEvent1.getX()) {
                 Log.d("Gesture ", "Left to Right Fling: " + motionEvent.getX() + " - " + motionEvent1.getX());
                 Log.d("Speed ", String.valueOf(v) + " pixels/second");
+                prevQuestion();
             }
             if (motionEvent.getX() > motionEvent1.getX()) {
                 Log.d("Gesture ", "Right to Left Fling: " + motionEvent.getX() + " - " + motionEvent1.getX());
                 Log.d("Speed ", String.valueOf(v) + " pixels/second");
-            }
-            if (motionEvent.getY() < motionEvent1.getY()) {
-                Log.d("Gesture ", "Up to Down Fling: " + motionEvent.getY() + " - " + motionEvent1.getY());
-                Log.d("Speed ", String.valueOf(v1) + " pixels/second");
-            }
-            if (motionEvent.getY() > motionEvent1.getY()) {
-                Log.d("Gesture ", "Down to Up Fling: " + motionEvent.getY() + " - " + motionEvent1.getY());
-                Log.d("Speed ", String.valueOf(v1) + " pixels/second");
+                nextQuestion();
+
             }
             return false;
+        }
+    }
+
+    private void nextQuestion(){
+        if(questionIndex<allRLayouts.size()-1) {
+            RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
+            params.setMargins(-Resources.getSystem().getDisplayMetrics().widthPixels, 0, Resources.getSystem().getDisplayMetrics().widthPixels, 0);
+            allRLayouts.get(questionIndex).setLayoutParams(params);
+            questionIndex++;
+            RelativeLayout.LayoutParams params2 = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
+            params2.setMargins(0, 0, 0, 0);
+            allRLayouts.get(questionIndex).setLayoutParams(params2);
+
+            RelativeLayout.LayoutParams params3 = ((RelativeLayout.LayoutParams) buttonNext.getLayoutParams());
+
+            params3.addRule(RelativeLayout.BELOW, allRLayouts.get(questionIndex).getId());
+            buttonNext.setLayoutParams(params3);
+            if(questionIndex==allRLayouts.size()-1) buttonNext.setVisibility(View.INVISIBLE);
+            buttonPrev.setVisibility(View.VISIBLE);
+        }
+    }
+    private void prevQuestion(){
+        if(questionIndex>0) {
+            RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
+            params.setMargins(+Resources.getSystem().getDisplayMetrics().widthPixels, 0, 0, 0);
+            allRLayouts.get(questionIndex).setLayoutParams(params);
+            questionIndex--;
+            RelativeLayout.LayoutParams params2 = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
+            params2.setMargins(0, 0, 0, 0);
+            allRLayouts.get(questionIndex).setLayoutParams(params2);
+
+            RelativeLayout.LayoutParams params3 = ((RelativeLayout.LayoutParams) buttonNext.getLayoutParams());
+
+            params3.addRule(RelativeLayout.BELOW, allRLayouts.get(questionIndex).getId());
+            buttonNext.setLayoutParams(params3);
+            if(questionIndex==0) buttonPrev.setVisibility(View.INVISIBLE);
+            buttonNext.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 
