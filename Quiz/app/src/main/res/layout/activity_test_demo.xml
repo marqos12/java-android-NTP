@@ -1,79 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true"
     tools:context=".Test_demo">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <RelativeLayout
+        android:id="@+id/mainRelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        tools:layout_editor_absoluteX="63dp"
-        tools:layout_editor_absoluteY="283dp">
+        android:layout_height="wrap_content"
+        android:padding="20dp">
 
-        <ScrollView
-            android:id="@+id/main"
-            android:layout_width="395dp"
-            android:layout_height="715dp"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="30dp"
 
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="336dp"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    tools:layout_editor_absoluteX="44dp"
-                    tools:layout_editor_absoluteY="44dp" />
-
-                <RadioGroup
-                    android:id="@+id/radioGroup"
-                    android:layout_width="307dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toBottomOf="@+id/textView"
-                    tools:layout_editor_absoluteX="63dp">
-
-                    <RadioButton
-                        android:id="@+id/radioButton4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="RadioButton" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="RadioButton" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="RadioButton" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="RadioButton"
-                        tools:layout_editor_absoluteX="63dp"
-                        tools:layout_editor_absoluteY="229dp" />
-
-                </RadioGroup>
-            </LinearLayout>
-        </ScrollView>
-
+            android:layout_marginBottom="50dp"
+            android:background="@color/buttonBackgroundGray"
+            android:drawableEnd="@drawable/icons8_right_24"
+            android:text="@string/nextQuestion" />
     </RelativeLayout>
+</ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

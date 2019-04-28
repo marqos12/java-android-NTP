@@ -15,7 +15,7 @@ public class Answer {
     Answer(JSONObject jsonObject)throws JSONException {
         this.id = (Integer) jsonObject.get("id");
         this.text = (String) jsonObject.get("text");
-        this.idQuestion = (String) jsonObject.get("idQuestion");
+        this.idQuestion = (String) jsonObject.get("idQuestion").toString() ;
 
         if (jsonObject.get("status").toString()!="null")
         this.status = (String) jsonObject.get("status");

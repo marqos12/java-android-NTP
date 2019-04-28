@@ -12,7 +12,7 @@ import java.util.List;
 public class Question {
     private Integer id;
     private String category;
-    private String idSubject;
+    private Integer idSubject;
     private String text;
     private String code;
     private String image;
@@ -21,7 +21,7 @@ public class Question {
     public Question(JSONObject jsonObject)throws JSONException {
         this.id = (Integer) jsonObject.get("id");
        // this.category = (String) jsonObject.get("category");
-        this.idSubject = (String) jsonObject.get("idSubject");
+        this.idSubject = (Integer) jsonObject.get("idSubject");
         this.text = (String) jsonObject.get("text");
         if (jsonObject.get("code").toString()!="null")
             this.code = (String) jsonObject.get("code");
@@ -44,11 +44,11 @@ public class Question {
         this.id = id;
     }
 
-    public String getIdSubject() {
+    public Integer getIdSubject() {
         return idSubject;
     }
 
-    public void setIdSubject(String idSubject) {
+    public void setIdSubject(Integer idSubject) {
         this.idSubject = idSubject;
     }
 

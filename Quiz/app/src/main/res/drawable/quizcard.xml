@@ -14,8 +14,8 @@ android:top="10dp"
 android:right="10dp"
 android:bottom="10dp" />
 <size
-android:width="200dp"
-android:height="100dp" />
+android:width="20dp"
+android:height="10dp" />
 <solid
 android:color="@color/background"/>
 <stroke

@@ -7,4 +7,5 @@
     <color name="borderBlue">#0281d6</color>
     <color name="textWhite">#FFFFFF</color>
     <color name="buttonBackgroundGray">#707070</color>
+    <color name="textShadow">#505050</color>
 </resources>
