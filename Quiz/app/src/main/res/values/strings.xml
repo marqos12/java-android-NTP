@@ -24,7 +24,10 @@
     <string name="seeAnswersHint">Zobacz odpowiedzi\nwczytano %d/%d</string>
     <string name="repeat">Rozwiąż ponownie</string>
     <string name="hideAnswers">Ukryj odpowiedzi</string>
-    <string name="points">Punktacja:\n0 - %d 2.0\n%d - %d 3.0\n%d - %d 3.5\n%d - %d 4.0\n%d - %d 4.5\n%d - %d 5.0</string>
+    <string name="points">Punktacja:\n0 - %.0f 2.0\n%.0f - %.0f 3.0\n%.0f - %.0f 3.5\n%.0f - %.0f 4.0\n%.0f - %.0f 4.5\n%.0f - %d 5.0</string>
+    <string name="pointsInline">Punktacja:\n0 - %.0f 2.0; %.0f - %.0f 3.0; %.0f - %.0f 3.5; %.0f - %.0f 4.0;\n %.0f - %.0f 4.5; %.0f - %d 5.0</string>
+    <string name="showPoints">Pokaż punktację</string>
+    <string name="rulesButton">Zasady</string>
 
     <string name="test">%d</string>
 

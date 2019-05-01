@@ -19,18 +19,23 @@ import java.io.FileOutputStream;
 
 import studia.quiz.model.Subject;
 
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+
 public class Test_demo_begin extends AppCompatActivity {
 
     public static TextView about;
     public static TextView rules;
     public String id;
     public ProgressDialog progress;
+    String points = "";
+    Button showPoints;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_begin);
         Intent intent = getIntent();
-        String message = intent.getStringExtra("name");
+        final String message = intent.getStringExtra("name");
 
         FileOutputStream outputStream;
         try {
@@ -60,9 +65,20 @@ public class Test_demo_begin extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Test_demo_begin.this, Test_demo.class);
                 intent.putExtra("id", id);
+                intent.putExtra("name", message);
                 startActivity(intent);
                 finish();
             }
+        });
+
+        showPoints = findViewById(R.id.buttonPoints);
+        showPoints.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    TextView textPoints = findViewById(R.id.textPoints);
+                    textPoints.setText(points);
+                    showPoints.setVisibility(View.INVISIBLE);
+                }
         });
 
         try
@@ -117,7 +133,9 @@ public class Test_demo_begin extends AppCompatActivity {
             progress.dismiss();
             Integer maxPoints = result.getNoQuestions();
 
-            Log.d("quiz1",getApplicationContext().getString(R.string.points, maxPoints*0.49,));
+            points = getApplicationContext().getString(R.string.points, floor(maxPoints*0.59),ceil(maxPoints*0.60),
+                    floor(maxPoints*0.64),ceil(maxPoints*0.65),floor(maxPoints*0.74),ceil(maxPoints*0.75),floor(maxPoints*(0.84)),ceil(maxPoints*(0.85)),
+                    floor(maxPoints*0.94),ceil(maxPoints*0.95),maxPoints);
 
         }
     }

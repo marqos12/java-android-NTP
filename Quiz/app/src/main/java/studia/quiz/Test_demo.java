@@ -53,6 +53,9 @@ import studia.quiz.model.Question;
 import studia.quiz.model.Result;
 import studia.quiz.model.Subject;
 
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+
 public class Test_demo extends AppCompatActivity {
 
     TextView questionText;
@@ -65,19 +68,21 @@ public class Test_demo extends AppCompatActivity {
     RelativeLayout mainRelativeLayout;
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
     Integer questionIndex = Integer.valueOf(0);
+    Subject quizDetails;
     public ProgressDialog progress;
 
     private GestureDetector myGestureDectector;
 
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     Gson gson = new Gson();
-
+    Boolean collapsedRules = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo);
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
+        String name = intent.getStringExtra("name");
 
 
 
@@ -117,6 +122,32 @@ public class Test_demo extends AppCompatActivity {
             }
         });
 
+        final TextView about = findViewById(R.id.about1);
+        final TextView rules = findViewById(R.id.rules);
+        final TextView ponts = findViewById(R.id.points);
+        Button buttonRules = findViewById(R.id.rulesButton);
+        buttonRules.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(collapsedRules){
+                    collapsedRules = !collapsedRules;
+                    about.setText(getApplicationContext().getString(R.string.testName,quizDetails.getName(),quizDetails.getSubject()));
+                    rules.setText(getApplicationContext().getString(R.string.rules,getApplicationContext().getString((quizDetails.getMultipleChoice().equals(1)?R.string.multiplyTrue:R.string.multiplyFalse)),
+                            quizDetails.getTime(),quizDetails.getNoQuestions(),quizDetails.getNoQuestions()));
+                            int maxPoints = quizDetails.getNoQuestions();
+                    ponts.setText(getApplicationContext().getString(R.string.pointsInline, floor(maxPoints*0.59),ceil(maxPoints*0.60),
+                             floor(maxPoints*0.64),ceil(maxPoints*0.65),floor(maxPoints*0.74),ceil(maxPoints*0.75),floor(maxPoints*(0.84)),ceil(maxPoints*(0.85)),
+                    floor(maxPoints*0.94),ceil(maxPoints*0.95),maxPoints));
+                }
+                else {
+                    collapsedRules = !collapsedRules;
+                    about.setText("");
+                    rules.setText("");
+                    ponts.setText("");
+                }
+            }
+        });
+
 
 
         mainRelativeLayout = findViewById(R.id.mainRelativeLayout);
@@ -132,6 +163,9 @@ public class Test_demo extends AppCompatActivity {
         {
             Log.e("quiz", e.getMessage());
         }
+
+        String url = "http://marqos12.000webhostapp.com/api/demo/details/" + name;
+        new GetQuizDetails().execute(url);
 
     }
 
@@ -187,6 +221,8 @@ public class Test_demo extends AppCompatActivity {
                     relativeLayout.setId(View.generateViewId());
                     RelativeLayout.LayoutParams rparam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
                     rparam.setMargins(Resources.getSystem().getDisplayMetrics().widthPixels,0,0,0);
+                    rparam.addRule(RelativeLayout.BELOW,R.id.rel);
+
                 relativeLayout.setLayoutParams(rparam);
 
                     TextView questionNumber = new TextView(getApplicationContext());
@@ -516,6 +552,41 @@ public class Test_demo extends AppCompatActivity {
                 finish();
                 progress.dismiss();
 
+        }
+    }
+
+    private class GetQuizDetails extends AsyncTask<String, Void, Subject> {
+
+        private OkHttpClient mClient = new OkHttpClient()   ;
+
+        @Override
+        protected Subject doInBackground(String... url)
+        {
+            String stringResponse="";
+            try
+            {
+                Request request = new Request
+                        .Builder()
+                        .method("GET",null)
+                        .url(url[0])
+                        .build();
+                Response response = mClient.newCall(request).execute();
+                stringResponse = response.body().string();
+                JSONObject jsonObject = new JSONObject(stringResponse);
+                Subject subject = new Subject(jsonObject);
+                return subject ;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Subject result)
+        {
+           quizDetails = result;
         }
     }
 

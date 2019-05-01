@@ -56,18 +56,36 @@
             android:textColor="@color/textWhite" />
 
         <Button
+            android:id="@+id/buttonPoints"
+            android:layout_width="160dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rules"
+            android:layout_marginTop="20dp"
+            android:text="@string/showPoints"
+            android:background="@color/buttonBackgroundGray"/>
+        <TextView
+            android:id="@+id/textPoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rules"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            android:textColor="@color/textWhite" />
+        <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:paddingHorizontal="10dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rules"
+            android:layout_below="@+id/textPoints"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="50dp"
             android:text="@string/toTest"
             app:layout_constraintTop_toBottomOf="@+id/about1"
-            tools:layout_editor_absoluteX="131dp"
             android:background="@color/buttonBackgroundGray"/>
 
         <Button
