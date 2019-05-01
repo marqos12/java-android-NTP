@@ -10,7 +10,13 @@ public class Answer {
     private String text;
     private String idQuestion;
     private String status;
+    private Integer value;
+    private Integer trueAnswer;
 
+
+    public Answer(Integer id ){
+        this.id = id;
+    }
 
     Answer(JSONObject jsonObject)throws JSONException {
         this.id = (Integer) jsonObject.get("id");
@@ -51,5 +57,21 @@ public class Answer {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setValue(Integer value ){
+        this.value = value;
+    }
+
+    public Integer getValue(){
+        return value;
+    }
+
+    public Integer getTrueAnswer() {
+        return trueAnswer;
+    }
+
+    public void setTrueAnswer(Integer trueAnswer) {
+        this.trueAnswer = trueAnswer;
     }
 }

@@ -34,6 +34,7 @@ public class Question {
         this.answers.add(new Answer(jsonArray.getJSONObject(2)));
         this.answers.add(new Answer(jsonArray.getJSONObject(3)));
     }
+    public Question(){}
 
 
     public Integer getId() {

@@ -2,6 +2,7 @@ package studia.quiz;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -28,20 +29,28 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Protocol;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import studia.quiz.model.Answer;
 import studia.quiz.model.Question;
+import studia.quiz.model.Result;
 import studia.quiz.model.Subject;
 
 public class Test_demo extends AppCompatActivity {
@@ -51,6 +60,7 @@ public class Test_demo extends AppCompatActivity {
     Button buttonNext;
     Button buttonPrev;
     Button buttonAccept;
+    List<Question>questions2;
     List<RelativeLayout> questions=new ArrayList<RelativeLayout>();
     RelativeLayout mainRelativeLayout;
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
@@ -59,6 +69,8 @@ public class Test_demo extends AppCompatActivity {
 
     private GestureDetector myGestureDectector;
 
+    MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +112,7 @@ public class Test_demo extends AppCompatActivity {
         buttonAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                checkAnswers();
                 Log.d("quiz","klikło accept");
             }
         });
@@ -167,6 +180,7 @@ public class Test_demo extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Question>questions)
         {
+            questions2=questions;
             Integer i = new Integer(1);
             for(Question question: questions){
                 RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
@@ -433,4 +447,76 @@ public class Test_demo extends AppCompatActivity {
         myGestureDectector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
+
+
+    void checkAnswers(){
+        Integer index = new Integer(0);
+        for(RelativeLayout relativeLayout: allRLayouts){
+            //List<Answer> answer = new ArrayList<Answer>();
+            RadioGroup radio = (RadioGroup)relativeLayout.getChildAt(2);
+            for(int i = 0; i < 4; i++){
+                //Answer answerek = new Answer(questions2.get(index).getAnswers().get(i).getId());
+                RadioButton radioButton = (RadioButton)radio.getChildAt(i);
+                if(radioButton.isChecked()) questions2.get(index).getAnswers().get(i).setValue(1);
+                else questions2.get(index).getAnswers().get(i).setValue(0);
+                //answer.add(answerek);
+            }
+            //answers.add(answer);
+            index++;
+        }
+        //zapytanie
+
+        String questionsJson = gson.toJson(questions2);
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput("quizAnswers", Context.MODE_PRIVATE);
+            outputStream.write(questionsJson.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        new CheckAnswers().execute(questions2);
+        progress = ProgressDialog.show(Test_demo.this, "Sprawdzanie odpowiedzi ...", "Oczekowanie na dane...", true);
+
+    }
+
+
+    private class CheckAnswers extends AsyncTask<List<Question>, Void, String> {
+
+        private OkHttpClient mClient = new OkHttpClient()   ;
+
+        protected String doInBackground(List<Question>... answers) {
+            String url = "http://marqos12.000webhostapp.com/api/question/checkWOR";
+
+            RequestBody requestBody = RequestBody.create(JSON,gson.toJson(answers[0]));
+            try {
+                com.squareup.okhttp.Request request = new Request
+                        .Builder()
+                        .post(requestBody)
+                        .url(url)
+                        .build();
+                mClient.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
+
+                Response response = mClient.newCall(request).execute();
+                String stringResponse = response.body().string();
+                return stringResponse;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;//mIcon11;
+        }
+
+        protected void onPostExecute(String result) {
+           // bmImage.setImageBitmap(result);
+                Intent intent = new Intent( Test_demo.this, TestDemoResult.class);
+                intent.putExtra("result", result);
+                intent.putExtra("answers", gson.toJson(questions2));
+                startActivity(intent);
+                finish();
+                progress.dismiss();
+
+        }
+    }
+
 }

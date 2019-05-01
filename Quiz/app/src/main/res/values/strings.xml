@@ -16,10 +16,14 @@
     <string name="nextQuestion">Dalej</string>
     <string name="prevQuestion">Poprzednie</string>
     <string name="acceptAnswers">ZAKOŃCZ</string>
-
+    <string name="summary">PODSUMOWANIE</string>
+    <string name="summaryGet">Uzyskano:\n%d/%d pkt\n%.4g %c</string>
+    <string name="summaryPositive">ZALICZONO</string>
+    <string name="summaryNegative">NIEZALICZONO</string>
+    <string name="seeAnswers">Zobacz odpowiedzi</string>
+    <string name="repeat">Rozwiąż ponownie</string>
 
     <string name="test">%d</string>
-    
-    
-    
+
+
 </resources>

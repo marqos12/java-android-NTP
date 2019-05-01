@@ -10,4 +10,6 @@
     <color name="textShadow">#505050</color>
     <color name="codeBackground">#e2e2e2</color>
     <color name="codeBorder">#000</color>
+    <color name="textNegative">#f14f4f</color>
+    <color name="textPositive">#55c155</color>
 </resources>

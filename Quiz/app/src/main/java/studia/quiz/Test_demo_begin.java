@@ -14,6 +14,9 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import org.json.JSONObject;
+
+import java.io.FileOutputStream;
+
 import studia.quiz.model.Subject;
 
 public class Test_demo_begin extends AppCompatActivity {
@@ -28,6 +31,15 @@ public class Test_demo_begin extends AppCompatActivity {
         setContentView(R.layout.activity_test_demo_begin);
         Intent intent = getIntent();
         String message = intent.getStringExtra("name");
+
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput("demoName", Context.MODE_PRIVATE);
+            outputStream.write(message.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         about = findViewById(R.id.about1);
         rules = findViewById(R.id.rules);
