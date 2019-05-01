@@ -9,9 +9,8 @@ public class Answer {
     private Integer id;
     private String text;
     private String idQuestion;
-    private String status;
+    private Integer status;
     private Integer value;
-    private Integer trueAnswer;
 
 
     public Answer(Integer id ){
@@ -22,9 +21,13 @@ public class Answer {
         this.id = (Integer) jsonObject.get("id");
         this.text = (String) jsonObject.get("text");
         this.idQuestion = (String) jsonObject.get("idQuestion").toString() ;
-
-        if (jsonObject.get("status").toString()!="null")
-        this.status = (String) jsonObject.get("status");
+        try {
+            this.status = (Integer) jsonObject.get("status");
+        }catch (Exception e){
+            //e.printStackTrace();
+        }
+        try {this.value = (Integer)jsonObject.get("value");}
+        catch (Exception e){}
     }
 
     public String getText() {
@@ -51,11 +54,11 @@ public class Answer {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -67,11 +70,4 @@ public class Answer {
         return value;
     }
 
-    public Integer getTrueAnswer() {
-        return trueAnswer;
-    }
-
-    public void setTrueAnswer(Integer trueAnswer) {
-        this.trueAnswer = trueAnswer;
-    }
 }

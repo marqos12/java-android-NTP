@@ -23,9 +23,9 @@ public class Question {
        // this.category = (String) jsonObject.get("category");
         this.idSubject = (Integer) jsonObject.get("idSubject");
         this.text = (String) jsonObject.get("text");
-        if (jsonObject.get("code").toString()!="null")
+        if (jsonObject.optString("code").toString()!="null"&&jsonObject.optString("code").toString()!="")
             this.code = (String) jsonObject.get("code");
-        if (jsonObject.get("image").toString()!="null")
+        if (jsonObject.optString("image").toString()!="null"&&jsonObject.optString("image").toString()!="")
             this.image = (String) jsonObject.get("image");
         JSONArray jsonArray = (JSONArray) jsonObject.get("answers");
         this.answers = new ArrayList<Answer>();

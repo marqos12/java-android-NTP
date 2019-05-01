@@ -115,6 +115,10 @@ public class Test_demo_begin extends AppCompatActivity {
                     result.getTime(),result.getNoQuestions(),result.getNoQuestions()));
             id=result.getId().toString();
             progress.dismiss();
+            Integer maxPoints = result.getNoQuestions();
+
+            Log.d("quiz1",getApplicationContext().getString(R.string.points, maxPoints*0.49,));
+
         }
     }
 }

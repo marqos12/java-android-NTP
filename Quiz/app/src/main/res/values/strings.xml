@@ -21,7 +21,10 @@
     <string name="summaryPositive">ZALICZONO</string>
     <string name="summaryNegative">NIEZALICZONO</string>
     <string name="seeAnswers">Zobacz odpowiedzi</string>
+    <string name="seeAnswersHint">Zobacz odpowiedzi\nwczytano %d/%d</string>
     <string name="repeat">Rozwiąż ponownie</string>
+    <string name="hideAnswers">Ukryj odpowiedzi</string>
+    <string name="points">Punktacja:\n0 - %d 2.0\n%d - %d 3.0\n%d - %d 3.5\n%d - %d 4.0\n%d - %d 4.5\n%d - %d 5.0</string>
 
     <string name="test">%d</string>
 
