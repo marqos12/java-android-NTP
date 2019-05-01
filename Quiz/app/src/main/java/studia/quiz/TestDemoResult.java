@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -57,6 +58,7 @@ public class TestDemoResult extends AppCompatActivity {
     Boolean loaded = false;
     RelativeLayout mainRelativeLayout;
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
+String multipleChoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,7 @@ public class TestDemoResult extends AppCompatActivity {
         String result = intent.getStringExtra("result");
         Log.d("quiz",result);
         String answers = intent.getStringExtra("answers");
-
+        multipleChoice = intent.getStringExtra("multipleChoice");
         mainRelativeLayout = findViewById(R.id.main);
 
         isPassedText = findViewById(R.id.textSummaryPos);
@@ -253,34 +255,67 @@ public class TestDemoResult extends AppCompatActivity {
             radioGroup.setLayoutParams(paramsText2);
             radioGroup.setId(View.generateViewId());
             Boolean positive = true;
-            for(int j = 0 ; j < 4 ; j++){
-                RadioButton answer1 = new RadioButton(getApplicationContext());
-                RadioGroup.LayoutParams paramsAnswer1 = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                paramsAnswer1.setMargins(0,10,0,0);
-                //((ViewGroup.MarginLayoutParams)paramsAnswer1).topMargin=10;
-                answer1.setLayoutParams(paramsAnswer1);
-                answer1.setId(View.generateViewId());
-                answer1.setEnabled(false);
+            if(multipleChoice.equals("0")){
+                for(int j = 0 ; j < 4 ; j++){
+                    RadioButton answer1 = new RadioButton(getApplicationContext());
+                    RadioGroup.LayoutParams paramsAnswer1 = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    paramsAnswer1.setMargins(0,10,0,0);
+                    //((ViewGroup.MarginLayoutParams)paramsAnswer1).topMargin=10;
+                    answer1.setLayoutParams(paramsAnswer1);
+                    answer1.setId(View.generateViewId());
+                    answer1.setEnabled(false);
 
-                answer1.setChecked(question.getAnswers().get(j).getValue().equals(1));
+                    answer1.setChecked(question.getAnswers().get(j).getValue().equals(1));
 
-                if (question.getAnswers().get(j).getValue().equals(1)){
-                    if(question.getAnswers().get(j).getStatus().equals(1)){
+                    if (question.getAnswers().get(j).getValue().equals(1)){
+                        if(question.getAnswers().get(j).getStatus().equals(1)){
+                            answer1.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.positive, 0);
+                        }
+                        else {
+                            answer1.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.negative, 0);
+                            positive = false;
+                        }
+                    }
+                    else if(question.getAnswers().get(j).getStatus().equals(1)){
+                        positive = false;
                         answer1.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.positive, 0);
                     }
-                    else {
-                        answer1.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.negative, 0);
-                        positive = false;
-                    }
+                    answer1.setText(questions.get(i-1).getAnswers().get(j).getText());
+                    answer1.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.quizcard));
+                    radioGroup.addView(answer1);
                 }
-                else if(question.getAnswers().get(j).getStatus().equals(1)){
-                    positive = false;
-                    answer1.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.positive, 0);
-                }
-                answer1.setText(questions.get(i-1).getAnswers().get(j).getText());
-                answer1.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.quizcard));
-                radioGroup.addView(answer1);
             }
+            else {
+                for(int j = 0 ; j < 4 ; j++){
+                    CheckBox answer1 = new CheckBox(getApplicationContext());
+                    RadioGroup.LayoutParams paramsAnswer1 = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    paramsAnswer1.setMargins(0,10,0,0);
+                    //((ViewGroup.MarginLayoutParams)paramsAnswer1).topMargin=10;
+                    answer1.setLayoutParams(paramsAnswer1);
+                    answer1.setId(View.generateViewId());
+                    answer1.setEnabled(false);
+
+                    answer1.setChecked(question.getAnswers().get(j).getValue().equals(1));
+
+                    if (question.getAnswers().get(j).getValue().equals(1)){
+                        if(question.getAnswers().get(j).getStatus().equals(1)){
+                            answer1.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.positive, 0);
+                        }
+                        else {
+                            answer1.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.negative, 0);
+                            positive = false;
+                        }
+                    }
+                    else if(question.getAnswers().get(j).getStatus().equals(1)){
+                        positive = false;
+                        answer1.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.positive, 0);
+                    }
+                    answer1.setText(questions.get(i-1).getAnswers().get(j).getText());
+                    answer1.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.quizcard));
+                    radioGroup.addView(answer1);
+                }
+            }
+
 
 
             relativeLayout.addView(radioGroup);

@@ -16,7 +16,10 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -69,6 +72,8 @@ public class Test_demo extends AppCompatActivity {
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
     Integer questionIndex = Integer.valueOf(0);
     Subject quizDetails;
+    String separatePage;
+    String multipleChoice;
     public ProgressDialog progress;
 
     private GestureDetector myGestureDectector;
@@ -83,6 +88,8 @@ public class Test_demo extends AppCompatActivity {
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         String name = intent.getStringExtra("name");
+        separatePage = intent.getStringExtra("separatePage");
+        multipleChoice = intent.getStringExtra("multipleChoice");
 
 
 
@@ -97,21 +104,29 @@ public class Test_demo extends AppCompatActivity {
         });
 
         buttonNext = findViewById(R.id.button2);
-        buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextQuestion();
-            }
-        });
 
         buttonPrev = findViewById(R.id.prevBtn);
-        buttonPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                prevQuestion();
-            }
-        });
 
+        if(separatePage.equals("1")){
+
+            buttonNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nextQuestion();
+                }
+            });
+            buttonPrev.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    prevQuestion();
+                }
+            });
+
+        }
+        else {
+            buttonNext.setVisibility(View.INVISIBLE);
+            buttonPrev.setVisibility(View.INVISIBLE);
+        }
 
         buttonAccept = findViewById(R.id.accept);
         buttonAccept.setOnClickListener(new View.OnClickListener() {
@@ -219,9 +234,14 @@ public class Test_demo extends AppCompatActivity {
             for(Question question: questions){
                 RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
                     relativeLayout.setId(View.generateViewId());
-                    RelativeLayout.LayoutParams rparam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
-                    rparam.setMargins(Resources.getSystem().getDisplayMetrics().widthPixels,0,0,0);
-                    rparam.addRule(RelativeLayout.BELOW,R.id.rel);
+                    RelativeLayout.LayoutParams rparam = new RelativeLayout.LayoutParams(Resources.getSystem().getDisplayMetrics().widthPixels,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    if(separatePage.equals("1")) {
+                        rparam.setMargins(Resources.getSystem().getDisplayMetrics().widthPixels, 0, 0, 0);
+                        rparam.addRule(RelativeLayout.BELOW,R.id.rel);
+                        }
+                    else {
+                        if(i>1)rparam.addRule(RelativeLayout.BELOW,allRLayouts.get(i-2).getId());
+                    }
 
                 relativeLayout.setLayoutParams(rparam);
 
@@ -239,7 +259,7 @@ public class Test_demo extends AppCompatActivity {
                     //Log.d("quiz",getApplicationContext().getString(R.string.test,buttonNext.getId()));
 
                     TextView questionText = new TextView(getApplicationContext());
-                    RelativeLayout.LayoutParams paramsText = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    RelativeLayout.LayoutParams paramsText = new RelativeLayout.LayoutParams(Resources.getSystem().getDisplayMetrics().widthPixels,ViewGroup.LayoutParams.WRAP_CONTENT);
                     paramsText.addRule(RelativeLayout.BELOW,questionNumber.getId());
                     questionText.setLayoutParams(paramsText);
 
@@ -261,17 +281,34 @@ public class Test_demo extends AppCompatActivity {
                     radioGroup.setLayoutParams(paramsText2);
                     radioGroup.setId(View.generateViewId());
 
-                    for(int j = 0 ; j < 4 ; j++){
-                        RadioButton answer1 = new RadioButton(getApplicationContext());
-                        RadioGroup.LayoutParams paramsAnswer1 = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                        paramsAnswer1.setMargins(0,10,0,0);
-                        //((ViewGroup.MarginLayoutParams)paramsAnswer1).topMargin=10;
-                        answer1.setLayoutParams(paramsAnswer1);
-                        answer1.setId(View.generateViewId());
-                        answer1.setText(questions.get(i-1).getAnswers().get(j).getText());
-                        answer1.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.quizcard));
-                        radioGroup.addView(answer1);
+                    Log.d("quiz1",multipleChoice);
+                    if(multipleChoice.equals("0")){
+                        for(int j = 0 ; j < 4 ; j++){
+                            RadioButton answer1 = new RadioButton(getApplicationContext());
+                            RadioGroup.LayoutParams paramsAnswer1 = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                            paramsAnswer1.setMargins(0,10,0,0);
+                            //((ViewGroup.MarginLayoutParams)paramsAnswer1).topMargin=10;
+                            answer1.setLayoutParams(paramsAnswer1);
+                            answer1.setId(View.generateViewId());
+                            answer1.setText(questions.get(i-1).getAnswers().get(j).getText());
+                            answer1.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.quizcard));
+                            radioGroup.addView(answer1);
+                        }
                     }
+                    else {
+                        for(int j = 0 ; j < 4 ; j++){
+                            CheckBox answer1 = new CheckBox(getApplicationContext());
+                            RadioGroup.LayoutParams paramsAnswer1 = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                            paramsAnswer1.setMargins(0,10,0,0);
+                            //((ViewGroup.MarginLayoutParams)paramsAnswer1).topMargin=10;
+                            answer1.setLayoutParams(paramsAnswer1);
+                            answer1.setId(View.generateViewId());
+                            answer1.setText(questions.get(i-1).getAnswers().get(j).getText());
+                            answer1.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.quizcard));
+                            radioGroup.addView(answer1);
+                        }
+                    }
+
 
 
                 relativeLayout.addView(radioGroup);
@@ -322,7 +359,8 @@ public class Test_demo extends AppCompatActivity {
 
             RelativeLayout.LayoutParams params3 = ((RelativeLayout.LayoutParams) buttonNext.getLayoutParams());
 
-            params3.addRule(RelativeLayout.BELOW,allRLayouts.get(questionIndex).getId());
+            if(separatePage.equals("1")) params3.addRule(RelativeLayout.BELOW,allRLayouts.get(questionIndex).getId());
+            else  params3.addRule(RelativeLayout.BELOW,allRLayouts.get(i-2).getId());
             buttonNext.setLayoutParams(params3);
 
             progress.dismiss();
@@ -400,16 +438,16 @@ public class Test_demo extends AppCompatActivity {
         @Override
         public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
             //gestureText.setText("onFling");
-            Log.d("Gesture ", "Kupa gówna");
+            Log.d("Gesture ", separatePage);
             if (motionEvent.getX() < motionEvent1.getX()) {
                 Log.d("Gesture ", "Left to Right Fling: " + motionEvent.getX() + " - " + motionEvent1.getX());
                 Log.d("Speed ", String.valueOf(v) + " pixels/second");
-                prevQuestion();
+               if(separatePage.equals("1")) prevQuestion();
             }
             if (motionEvent.getX() > motionEvent1.getX()) {
                 Log.d("Gesture ", "Right to Left Fling: " + motionEvent.getX() + " - " + motionEvent1.getX());
                 Log.d("Speed ", String.valueOf(v) + " pixels/second");
-                nextQuestion();
+                if(separatePage.equals("1"))nextQuestion();
 
             }
             return false;
@@ -418,13 +456,48 @@ public class Test_demo extends AppCompatActivity {
 
     private void nextQuestion(){
         if(questionIndex<allRLayouts.size()-1) {
-            RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
-            params.setMargins(-Resources.getSystem().getDisplayMetrics().widthPixels, 0, Resources.getSystem().getDisplayMetrics().widthPixels, 0);
-            allRLayouts.get(questionIndex).setLayoutParams(params);
+
+            //RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
+        final Integer id = questionIndex;
+            Animation a = new Animation() {
+                @Override
+                protected void applyTransformation(float interpolatedTime, Transformation t) {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) allRLayouts.get(id).getLayoutParams();
+                    params.setMargins((int)(-Resources.getSystem().getDisplayMetrics().widthPixels * interpolatedTime), 0, (int)(Resources.getSystem().getDisplayMetrics().widthPixels * interpolatedTime), 0);
+                    allRLayouts.get(id).setLayoutParams(params);
+                }
+            };
+            a.setDuration(500); // in ms
+            allRLayouts.get(id).startAnimation(a);
+
+            //params.setMargins(-Resources.getSystem().getDisplayMetrics().widthPixels, 0, Resources.getSystem().getDisplayMetrics().widthPixels, 0);
+            //allRLayouts.get(questionIndex).setLayoutParams(params);
+
             questionIndex++;
+/*
             RelativeLayout.LayoutParams params2 = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
             params2.setMargins(0, 0, 0, 0);
             allRLayouts.get(questionIndex).setLayoutParams(params2);
+
+*/
+
+
+            final Integer id2 = questionIndex;
+
+            Animation a2 = new Animation() {
+                @Override
+                protected void applyTransformation(float interpolatedTime, Transformation t) {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) allRLayouts.get(id2).getLayoutParams();
+                    Log.d("quiz1",String.valueOf(interpolatedTime));
+                    params.setMargins((int)(Resources.getSystem().getDisplayMetrics().widthPixels-Resources.getSystem().getDisplayMetrics().widthPixels * interpolatedTime), 0,
+                            (int) -(Resources.getSystem().getDisplayMetrics().widthPixels-Resources.getSystem().getDisplayMetrics().widthPixels * interpolatedTime), 0);
+                    allRLayouts.get(id2).setLayoutParams(params);
+                }
+            };
+            a2.setDuration(500); // in ms
+            allRLayouts.get(id2).startAnimation(a2);
+
+
 
             RelativeLayout.LayoutParams params3 = ((RelativeLayout.LayoutParams) buttonNext.getLayoutParams());
 
@@ -436,16 +509,46 @@ public class Test_demo extends AppCompatActivity {
     }
     private void prevQuestion(){
         if(questionIndex>0) {
-            RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
+            /*RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
             params.setMargins(+Resources.getSystem().getDisplayMetrics().widthPixels, 0, 0, 0);
             allRLayouts.get(questionIndex).setLayoutParams(params);
             questionIndex--;
             RelativeLayout.LayoutParams params2 = ((RelativeLayout.LayoutParams) allRLayouts.get(questionIndex).getLayoutParams());
             params2.setMargins(0, 0, 0, 0);
             allRLayouts.get(questionIndex).setLayoutParams(params2);
+*/
+            final Integer id = questionIndex;
+            Animation a = new Animation() {
+                @Override
+                protected void applyTransformation(float interpolatedTime, Transformation t) {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) allRLayouts.get(id).getLayoutParams();
+                    params.setMargins((int)(Resources.getSystem().getDisplayMetrics().widthPixels * interpolatedTime), 0,
+                            (int) -(Resources.getSystem().getDisplayMetrics().widthPixels * interpolatedTime), 0);
+                    allRLayouts.get(id).setLayoutParams(params);
+                }
+            };
+            a.setDuration(500);
+            allRLayouts.get(id).startAnimation(a);
+
+            questionIndex--;
+
+            final Integer id2 = questionIndex;
+
+            Animation a2 = new Animation() {
+                @Override
+                protected void applyTransformation(float interpolatedTime, Transformation t) {
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) allRLayouts.get(id2).getLayoutParams();
+                    Log.d("quiz1",String.valueOf(interpolatedTime));
+                    params.setMargins((int)(-Resources.getSystem().getDisplayMetrics().widthPixels+Resources.getSystem().getDisplayMetrics().widthPixels * interpolatedTime), 0,
+                            (int)(Resources.getSystem().getDisplayMetrics().widthPixels-Resources.getSystem().getDisplayMetrics().widthPixels * interpolatedTime), 0);
+                    allRLayouts.get(id2).setLayoutParams(params);
+                }
+            };
+            a2.setDuration(500);
+            allRLayouts.get(id2).startAnimation(a2);
+
 
             RelativeLayout.LayoutParams params3 = ((RelativeLayout.LayoutParams) buttonNext.getLayoutParams());
-
             params3.addRule(RelativeLayout.BELOW, allRLayouts.get(questionIndex).getId());
             buttonNext.setLayoutParams(params3);
             if(questionIndex==0) buttonPrev.setVisibility(View.INVISIBLE);
@@ -490,12 +593,23 @@ public class Test_demo extends AppCompatActivity {
         for(RelativeLayout relativeLayout: allRLayouts){
             //List<Answer> answer = new ArrayList<Answer>();
             RadioGroup radio = (RadioGroup)relativeLayout.getChildAt(2);
-            for(int i = 0; i < 4; i++){
-                //Answer answerek = new Answer(questions2.get(index).getAnswers().get(i).getId());
-                RadioButton radioButton = (RadioButton)radio.getChildAt(i);
-                if(radioButton.isChecked()) questions2.get(index).getAnswers().get(i).setValue(1);
-                else questions2.get(index).getAnswers().get(i).setValue(0);
-                //answer.add(answerek);
+            if(multipleChoice.equals("0")){
+                for(int i = 0; i < 4; i++){
+                    //Answer answerek = new Answer(questions2.get(index).getAnswers().get(i).getId());
+                    RadioButton radioButton = (RadioButton)radio.getChildAt(i);
+                    if(radioButton.isChecked()) questions2.get(index).getAnswers().get(i).setValue(1);
+                    else questions2.get(index).getAnswers().get(i).setValue(0);
+                    //answer.add(answerek);
+                }
+            }
+            else {
+                for(int i = 0; i < 4; i++){
+                    //Answer answerek = new Answer(questions2.get(index).getAnswers().get(i).getId());
+                    CheckBox radioButton = (CheckBox) radio.getChildAt(i);
+                    if(radioButton.isChecked()) questions2.get(index).getAnswers().get(i).setValue(1);
+                    else questions2.get(index).getAnswers().get(i).setValue(0);
+                    //answer.add(answerek);
+                }
             }
             //answers.add(answer);
             index++;
@@ -548,6 +662,7 @@ public class Test_demo extends AppCompatActivity {
                 Intent intent = new Intent( Test_demo.this, TestDemoResult.class);
                 intent.putExtra("result", result);
                 intent.putExtra("answers", gson.toJson(questions2));
+                intent.putExtra("multipleChoice", multipleChoice);
                 startActivity(intent);
                 finish();
                 progress.dismiss();

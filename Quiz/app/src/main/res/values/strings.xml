@@ -17,7 +17,7 @@
     <string name="prevQuestion">Poprzednie</string>
     <string name="acceptAnswers">ZAKOŃCZ</string>
     <string name="summary">PODSUMOWANIE</string>
-    <string name="summaryGet">Uzyskano:\n%d/%d pkt\n%.4g %c</string>
+    <string name="summaryGet">Uzyskano:\n%d/%d pkt\n%.2f %c</string>
     <string name="summaryPositive">ZALICZONO</string>
     <string name="summaryNegative">NIEZALICZONO</string>
     <string name="seeAnswers">Zobacz odpowiedzi</string>

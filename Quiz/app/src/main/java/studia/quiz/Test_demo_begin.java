@@ -30,6 +30,7 @@ public class Test_demo_begin extends AppCompatActivity {
     public ProgressDialog progress;
     String points = "";
     Button showPoints;
+    Subject subject;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +67,8 @@ public class Test_demo_begin extends AppCompatActivity {
                 Intent intent = new Intent(Test_demo_begin.this, Test_demo.class);
                 intent.putExtra("id", id);
                 intent.putExtra("name", message);
+                intent.putExtra("multipleChoice", Integer.toString( subject.getMultipleChoice()));
+                intent.putExtra("separatePage", Integer.toString( subject.getSeparatePage()));
                 startActivity(intent);
                 finish();
             }
@@ -136,7 +139,7 @@ public class Test_demo_begin extends AppCompatActivity {
             points = getApplicationContext().getString(R.string.points, floor(maxPoints*0.59),ceil(maxPoints*0.60),
                     floor(maxPoints*0.64),ceil(maxPoints*0.65),floor(maxPoints*0.74),ceil(maxPoints*0.75),floor(maxPoints*(0.84)),ceil(maxPoints*(0.85)),
                     floor(maxPoints*0.94),ceil(maxPoints*0.95),maxPoints);
-
+            subject = result;
         }
     }
 }
