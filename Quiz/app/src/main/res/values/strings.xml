@@ -28,6 +28,11 @@
     <string name="pointsInline">Punktacja:\n0 - %.0f 2.0; %.0f - %.0f 3.0; %.0f - %.0f 3.5; %.0f - %.0f 4.0;\n %.0f - %.0f 4.5; %.0f - %d 5.0</string>
     <string name="showPoints">Pokaż punktację</string>
     <string name="rulesButton">Zasady</string>
+    <string name="login">Zaloguj</string>
+    <string name="register">Zarejestruj</string>
+    <string name="loginSign">Logowanie</string>
+    <string name="registerSign">Rejestracja</string>
+    <string name="createNewAccount">Utwórz nowe konto</string>
 
     <string name="test">%d</string>
 

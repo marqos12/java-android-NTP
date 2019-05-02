@@ -31,5 +31,23 @@ public class MainActivity extends Activity {
                 finish();
             }
         });
+        Button button3 = findViewById(R.id.loginBtn);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginScreen.class);
+                startActivity(intent);
+
+            }
+        });
+        Button button4 = findViewById(R.id.registerBtn);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegisterScreen.class);
+                startActivity(intent);
+
+            }
+        });
     }
 }
