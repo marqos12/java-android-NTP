@@ -117,6 +117,30 @@
             android:padding="10sp"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/loginFailedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/surname"
+            android:layout_marginTop="0dp"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textColor="@color/textNegative"/>
+
+        <TextView
+            android:id="@+id/textInProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/surname"
+            android:layout_marginTop="0dp"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:text="Logowanie..."
+            android:visibility="invisible"
+            android:textColor="@color/textWhite"/>
+
         <Button
             android:id="@+id/registerBtn"
             android:layout_width="200dp"
