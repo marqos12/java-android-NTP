@@ -33,8 +33,10 @@
     <string name="loginSign">Logowanie</string>
     <string name="registerSign">Rejestracja</string>
     <string name="createNewAccount">Utwórz nowe konto</string>
+    <string name="mainPanel">Panel główny</string>
+    <string name="mainPanelStudent">Poniżej znajdują się quizy przygotowane dla Ciebie</string>
 
     <string name="test">%d</string>
-
+    <string name="title_activity_login">Sign in</string>
 
 </resources>

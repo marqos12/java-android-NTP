@@ -157,6 +157,8 @@ public class RegisterScreen extends AppCompatActivity {
                     JSONObject userJsonObject = jsonObject.getJSONObject("user");
                     User respUsser = new User(userJsonObject);
 
+                    Intent intent = new Intent(RegisterScreen.this, LoginScreen.class);
+                    startActivity(intent);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

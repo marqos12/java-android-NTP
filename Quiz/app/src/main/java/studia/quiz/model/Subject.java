@@ -22,6 +22,7 @@ public class Subject {
         this.id = (Integer) jsonObject.get("id");
         this.name = (String) jsonObject.get("name");
         this.idAuthor = (Integer) jsonObject.get("idAuthor");
+        if(!jsonObject.isNull("noQuestions"))
         this.noQuestions = (Integer) jsonObject.get("noQuestions");
         this.multipleChoice = (Integer) jsonObject.get("multipleChoice");
         this.separatePage = (Integer) jsonObject.get("separatePage");

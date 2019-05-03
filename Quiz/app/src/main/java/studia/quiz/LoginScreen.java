@@ -1,6 +1,7 @@
 package studia.quiz;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import com.squareup.okhttp.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
@@ -35,8 +37,8 @@ public class LoginScreen extends AppCompatActivity {
     String loginURL = "http://marqos12.000webhostapp.com/api/login";
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     Gson gson = new Gson();
-TextView loginFailed;
-TextView inProgress;
+    TextView loginFailed;
+    TextView inProgress;
     public ProgressDialog progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +118,24 @@ TextView inProgress;
                 else {
                     JSONObject userJsonObject = jsonObject.getJSONObject("user");
                     User respUsser = new User(userJsonObject);
+                    FileOutputStream outputStream;
+                    try {
+                        outputStream = openFileOutput("userName", Context.MODE_PRIVATE);
+                        outputStream.write(userResult.getBytes());
+                        outputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if(respUsser.getRole().equals("s")){
 
+                        Intent intent = new Intent(LoginScreen.this, MainStudent.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(LoginScreen.this, MainTeacher.class);
+                        startActivity(intent);
+                    }
+                    finish();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
