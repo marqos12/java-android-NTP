@@ -44,8 +44,8 @@ public class TestBegin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_begin);
-        String id = getIntent().getStringExtra("id");
-        String JWT = getIntent().getStringExtra("jwt");
+        final String id = getIntent().getStringExtra("id");
+        final String JWT = getIntent().getStringExtra("jwt");
 
 
 
@@ -71,19 +71,19 @@ public class TestBegin extends AppCompatActivity {
             }
         });
 
-       /* Button button3 = findViewById(R.id.button3);
+        Button button3 = findViewById(R.id.button3);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TestBegin.this, Test_demo.class);
+                Intent intent = new Intent(TestBegin.this, Test.class);
                 intent.putExtra("id", id);
-                intent.putExtra("name", message);
+                intent.putExtra("jwt", JWT);
                 intent.putExtra("multipleChoice", Integer.toString(subject.getMultipleChoice()));
                 intent.putExtra("separatePage", Integer.toString(subject.getSeparatePage()));
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
 
         showPoints = findViewById(R.id.buttonPoints);
         showPoints.setOnClickListener(new View.OnClickListener() {

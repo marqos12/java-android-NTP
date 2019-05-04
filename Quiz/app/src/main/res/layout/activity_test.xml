@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true"
+    tools:context=".Test">
+    <ScrollView
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/mainRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rel"
+                android:layout_marginBottom="10dp">
+                <TextView
+                    android:id="@+id/about1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="22dp"
+                    android:textSize="22dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/borderBlue" />
+
+
+                <TextView
+                    android:id="@+id/rules"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/about1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="22dp"
+                    android:textSize="16dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/textWhite" />
+                <TextView
+                    android:id="@+id/points"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rules"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10sp"
+                    android:textSize="14sp"
+                    android:textAlignment="center"
+                    android:textColor="@color/textWhite" />
+
+                <Button
+                    android:id="@+id/rulesButton"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/rules"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="-60dp"
+                    android:layout_toEndOf="@+id/rules"
+                    android:background="@color/buttonBackgroundGray"
+                    android:text="@string/rulesButton" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/prevBtn"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+
+                android:layout_alignTop="@+id/button2"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:visibility="invisible"
+                android:background="@color/buttonBackgroundGray"
+                android:drawableStart="@drawable/icons8_left_24"
+                android:text="@string/prevQuestion" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rel"
+                android:layout_alignParentEnd="true"
+
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:background="@color/buttonBackgroundGray"
+                android:drawableEnd="@drawable/icons8_right_24"
+                android:text="@string/nextQuestion" />
+            <Button
+                android:id="@+id/accept"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button2"
+
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/buttonBackgroundGray"
+                android:text="@string/acceptAnswers" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</ScrollView>

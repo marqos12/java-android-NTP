@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TestBegin"></activity>
+        <activity android:name=".TestResult"></activity>
+        <activity android:name=".Test" />
+        <activity android:name=".TestBegin" />
         <activity android:name=".MainTeacher" />
         <activity android:name=".MainStudent" />
         <activity android:name=".RegisterScreen" />
