@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -76,6 +77,18 @@ public class MainStudent extends AppCompatActivity {
             Intent intent = new Intent(MainStudent.this, MainActivity.class);
             startActivity(intent);
         }
+
+        Button logout = findViewById(R.id.logoutBtn);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteFile("userName");
+                Intent intent = new Intent(MainStudent.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
 

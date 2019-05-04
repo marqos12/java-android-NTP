@@ -35,6 +35,7 @@
     <string name="createNewAccount">Utwórz nowe konto</string>
     <string name="mainPanel">Panel główny</string>
     <string name="mainPanelStudent">Poniżej znajdują się quizy przygotowane dla Ciebie</string>
+<string name="logout">Wyloguj się</string>
 
     <string name="test">%d</string>
     <string name="title_activity_login">Sign in</string>
