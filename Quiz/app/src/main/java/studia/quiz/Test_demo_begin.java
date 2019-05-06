@@ -32,13 +32,15 @@ public class Test_demo_begin extends AppCompatActivity {
     String points = "";
     Button showPoints;
     Subject subject;
-    String getDemoDetailsURL = "http://marqos12.000webhostapp.com/api/demo/details/";
+    String getDemoDetailsURL ;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_begin);
+        getDemoDetailsURL =getApplicationContext().getString(R.string.url, "/api/demo/details/");
         Intent intent = getIntent();
         final String message = intent.getStringExtra("name");
         FileOutputStream outputStream;

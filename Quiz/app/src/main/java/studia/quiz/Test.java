@@ -75,9 +75,9 @@ public class Test extends AppCompatActivity {
     Gson gson = new Gson();
     Boolean collapsedRules = true;
 
-    String checkAnswersURL = "http://marqos12.000webhostapp.com/api/question/checkWR";
-    String getTestDetailsURL = "http://marqos12.000webhostapp.com/api/subject/details/";
-    String getQuestionsURL = "http://marqos12.000webhostapp.com/api/question/WAFQ/";
+    String checkAnswersURL ;
+    String getTestDetailsURL;
+    String getQuestionsURL;
 
 
 
@@ -86,6 +86,9 @@ public class Test extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+         checkAnswersURL =getApplicationContext().getString(R.string.url, "/api/question/checkWR");
+         getTestDetailsURL =getApplicationContext().getString(R.string.url, "/api/subject/details/");
+         getQuestionsURL =getApplicationContext().getString(R.string.url, "/api/question/WAFQ/");
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
         JWT = intent.getStringExtra("jwt");

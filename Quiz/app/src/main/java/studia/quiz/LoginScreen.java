@@ -34,7 +34,7 @@ import studia.quiz.model.Question;
 import studia.quiz.model.User;
 
 public class LoginScreen extends AppCompatActivity {
-    String loginURL = "http://marqos12.000webhostapp.com/api/login";
+    String loginURL ;
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     Gson gson = new Gson();
     TextView loginFailed;
@@ -44,7 +44,7 @@ public class LoginScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
-
+        loginURL =getApplicationContext().getString(R.string.url, "/api/login");
         final EditText login = findViewById(R.id.login);
         final EditText password = findViewById(R.id.password);
         loginFailed = findViewById(R.id.loginFailedText);

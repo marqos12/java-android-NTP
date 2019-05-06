@@ -37,6 +37,8 @@
     <string name="mainPanelStudent">Poniżej znajdują się quizy przygotowane dla Ciebie</string>
 <string name="logout">Wyloguj się</string>
 
+    <string name="url">http://192.168.43.89:80/web%s</string>
+
     <string name="test">%d</string>
     <string name="title_activity_login">Sign in</string>
 

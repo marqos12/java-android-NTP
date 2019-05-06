@@ -45,7 +45,7 @@ public class MainStudent extends AppCompatActivity {
     User user;
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     Gson gson = new Gson();
-    String getCourseTestList = "http://marqos12.000webhostapp.com/api/subject/list/course/";
+    String getCourseTestList;
     RelativeLayout quizList;
     public ProgressDialog progress;
     List<Subject> subjectList = new ArrayList<Subject>();
@@ -55,7 +55,7 @@ public class MainStudent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_student);
-
+        getCourseTestList =getApplicationContext().getString(R.string.url, "/api/subject/list/course/");
         quizList = findViewById(R.id.quizList);
         String userString = "";
         FileInputStream inputStream;

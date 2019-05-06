@@ -28,7 +28,7 @@ import java.util.Arrays;
 import studia.quiz.model.User;
 
 public class RegisterScreen extends AppCompatActivity {
-    String registerURL = "http://marqos12.000webhostapp.com/api/register";
+    String registerURL ;
     MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     Gson gson = new Gson();
 
@@ -47,7 +47,7 @@ public class RegisterScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
-
+        registerURL =getApplicationContext().getString(R.string.url, "/api/register");
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         email = findViewById(R.id.login);

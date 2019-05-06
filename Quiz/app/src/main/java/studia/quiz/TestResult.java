@@ -56,8 +56,7 @@ public class TestResult extends AppCompatActivity {
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
     String multipleChoice;
 String JWT;
-    String getDemoQuestionsWAURL = "http://marqos12.000webhostapp.com/api/question/WA/";
-
+    String getDemoQuestionsWAURL ;
 
 
     @Override
@@ -65,6 +64,7 @@ String JWT;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_result);
         Intent intent = getIntent();
+        getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/question/WA/");
         String result = intent.getStringExtra("result");
         String answers = intent.getStringExtra("answers");
         multipleChoice = intent.getStringExtra("multipleChoice");

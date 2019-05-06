@@ -74,9 +74,9 @@ public class Test_demo extends AppCompatActivity {
     Gson gson = new Gson();
     Boolean collapsedRules = true;
 
-    String checkAnswersURL = "http://marqos12.000webhostapp.com/api/question/checkWOR";
-    String getDemoDetailsURL = "http://marqos12.000webhostapp.com/api/demo/details/";
-    String getQuestionsURL = "https://marqos12.000webhostapp.com/api/question/demo/WAFQ/";
+    String checkAnswersURL ;
+    String getDemoDetailsURL ;
+    String getQuestionsURL ;
 
 
     @Override
@@ -89,6 +89,9 @@ public class Test_demo extends AppCompatActivity {
         separatePage = intent.getStringExtra("separatePage");
         multipleChoice = intent.getStringExtra("multipleChoice");
 
+        checkAnswersURL =getApplicationContext().getString(R.string.url, "/api/question/checkWOR");
+        getDemoDetailsURL =getApplicationContext().getString(R.string.url, "/api/demo/details/");
+        getQuestionsURL =getApplicationContext().getString(R.string.url, "/api/question/demo/WAFQ/");
         AndroidGestureDectector androidGestureDectector = new AndroidGestureDectector();
         myGestureDectector = new GestureDetector(Test_demo.this, androidGestureDectector);
 

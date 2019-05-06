@@ -39,14 +39,16 @@ public class TestBegin extends AppCompatActivity {
     Button showPoints;
 
     Subject subject;
-    String getTestDetailsURL = "http://marqos12.000webhostapp.com/api/subject/details/";
+    String getTestDetailsURL ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_begin);
         final String id = getIntent().getStringExtra("id");
         final String JWT = getIntent().getStringExtra("jwt");
-
+        getTestDetailsURL =getApplicationContext().getString(R.string.url, "/api/subject/details/");
 
 
         FileOutputStream outputStream;

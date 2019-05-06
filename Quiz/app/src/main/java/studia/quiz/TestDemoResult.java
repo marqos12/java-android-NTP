@@ -56,7 +56,7 @@ public class TestDemoResult extends AppCompatActivity {
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
     String multipleChoice;
 
-    String getDemoQuestionsWAURL = "http://marqos12.000webhostapp.com/api/question/demo/WA/";
+    String getDemoQuestionsWAURL;
 
 
     @Override
@@ -64,6 +64,7 @@ public class TestDemoResult extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_result);
         Intent intent = getIntent();
+        getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/question/demo/WA/");
         String result = intent.getStringExtra("result");
         String answers = intent.getStringExtra("answers");
         multipleChoice = intent.getStringExtra("multipleChoice");
