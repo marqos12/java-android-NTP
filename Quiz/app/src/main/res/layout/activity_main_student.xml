@@ -63,5 +63,18 @@
         android:text="@string/logout"
         android:background="@color/buttonBackgroundGray"/>
 
+    <Button
+        android:id="@+id/editProfileBtn"
+        android:layout_width="200dp"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logoutBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="50dp"
+        android:text="@string/editProfile"
+        android:background="@color/buttonBackgroundGray"/>
+
 </RelativeLayout>
 </ScrollView>

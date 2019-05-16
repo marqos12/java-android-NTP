@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TestResult"></activity>
+        <activity android:name=".editProfile"></activity>
+        <activity android:name=".TestResult" />
         <activity android:name=".Test" />
         <activity android:name=".TestBegin" />
         <activity android:name=".MainTeacher" />

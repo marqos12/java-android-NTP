@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".editProfile">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20sp">
+        <TextView
+            android:id="@+id/registerSign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="59dp"
+            android:fontFamily="@font/didact_gothic"
+            android:text="@string/editProfileString"
+            android:textColor="@color/borderBlue"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="131dp" />
+
+        <EditText
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/registerSign"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20sp"
+            android:background="@color/buttonBackgroundDisable"
+            android:clickable="false"
+            android:drawableStart="@android:drawable/ic_menu_myplaces"
+            android:ems="10"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:padding="10sp"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/login"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20sp"
+            android:background="@color/buttonBackgroundDisable"
+            android:drawableStart="@android:drawable/ic_lock_idle_lock"
+            android:ems="10"
+            android:hint="Hasło"
+            android:inputType="textPassword"
+            android:padding="10sp"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/passwordConfirmed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20sp"
+            android:background="@color/buttonBackgroundDisable"
+            android:drawableStart="@android:drawable/ic_lock_idle_lock"
+            android:ems="10"
+            android:hint="Powtórz hasło"
+            android:inputType="textPassword"
+            android:padding="10sp"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/passwordConfirmed"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20sp"
+            android:background="@color/buttonBackgroundDisable"
+            android:drawableStart="@android:drawable/ic_menu_myplaces"
+            android:ems="10"
+            android:hint="Identyfikator grupy"
+            android:inputType="textEmailAddress"
+            android:padding="10sp"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/course"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20sp"
+            android:background="@color/buttonBackgroundDisable"
+            android:drawableStart="@android:drawable/ic_menu_myplaces"
+            android:ems="10"
+            android:hint="Imię"
+            android:inputType="textEmailAddress"
+            android:padding="10sp"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/surname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20sp"
+            android:background="@color/buttonBackgroundDisable"
+            android:drawableStart="@android:drawable/ic_menu_myplaces"
+            android:ems="10"
+            android:hint="Nazwisko"
+            android:inputType="textEmailAddress"
+            android:padding="10sp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/loginFailedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/surname"
+            android:layout_marginTop="0dp"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:textColor="@color/textNegative"/>
+
+        <TextView
+            android:id="@+id/textInProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/surname"
+            android:layout_marginTop="0dp"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:text="Logowanie..."
+            android:visibility="invisible"
+            android:textColor="@color/textWhite"/>
+
+        <Button
+            android:id="@+id/editBtn"
+            android:layout_width="200dp"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/surname"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/editProfile"
+            android:background="@color/buttonBackgroundGray"/>
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="200dp"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editBtn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="50dp"
+            android:text="@string/back"
+            android:background="@color/buttonBackgroundGray"/>
+
+
+    </RelativeLayout>
+
+</ScrollView>

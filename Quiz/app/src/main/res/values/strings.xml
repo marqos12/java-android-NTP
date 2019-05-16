@@ -35,7 +35,11 @@
     <string name="createNewAccount">Utwórz nowe konto</string>
     <string name="mainPanel">Panel główny</string>
     <string name="mainPanelStudent">Poniżej znajdują się quizy przygotowane dla Ciebie</string>
-<string name="logout">Wyloguj się</string>
+    <string name="logout">Wyloguj się</string>
+    <string name="editProfile">Edytuj profil</string>
+    <string name="editProfileString">Edycja Profilu</string>
+
+
 
     <string name="url">http://192.168.43.89:80/web%s</string>
 

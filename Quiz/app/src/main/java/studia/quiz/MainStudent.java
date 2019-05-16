@@ -65,6 +65,14 @@ public class MainStudent extends AppCompatActivity {
             BufferedReader bufferedReader = new BufferedReader(isr);
             userString = bufferedReader.readLine();
             inputStream.close();
+            /*FileOutputStream outputStream;
+            try {
+                outputStream = openFileOutput("userName", Context.MODE_PRIVATE);
+                outputStream.write(userString.getBytes());
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
             JSONObject userJSON = new JSONObject(userString);
             Log.d("quiz1",userString);
             JWT = userJSON.getString("token");
@@ -78,6 +86,21 @@ public class MainStudent extends AppCompatActivity {
             startActivity(intent);
         }
 
+        Button editProfile = findViewById(R.id.editProfileBtn);
+        final String finalUserString = userString;
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteFile("userName");
+                Intent intent = new Intent(MainStudent.this, editProfile.class);
+                intent.putExtra("user", finalUserString);
+                startActivity(intent);
+
+            }
+        });
+
+
+
         Button logout = findViewById(R.id.logoutBtn);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +111,8 @@ public class MainStudent extends AppCompatActivity {
                 finish();
             }
         });
+
+
 
     }
 
