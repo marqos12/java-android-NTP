@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Arrays;
 
+import studia.quiz.model.SignUpForm;
 import studia.quiz.model.User;
 
 public class RegisterScreen extends AppCompatActivity {
@@ -50,7 +51,16 @@ public class RegisterScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
+        registerURL =getApplicationContext().getString(R.string.url, "/api/auth/signup");
+        name = findViewById(R.id.name);
+        surname = findViewById(R.id.surname);
+        email = findViewById(R.id.login);
+        course = findViewById(R.id.course);
+        password = findViewById(R.id.password);
+        confirmPassword = findViewById(R.id.passwordConfirmed);
 
+        loginFailed = findViewById(R.id.loginFailedText);
+        inProgress = findViewById(R.id.textInProgress);
        /* String userString = getIntent().getStringExtra("user");
         JSONObject userJSON = null;
         try {
@@ -63,13 +73,7 @@ public class RegisterScreen extends AppCompatActivity {
             e.printStackTrace();
         }
 */
-        registerURL =getApplicationContext().getString(R.string.url, "/api/register");
-        name = findViewById(R.id.name);
-        surname = findViewById(R.id.surname);
-        email = findViewById(R.id.login);
-        course = findViewById(R.id.course);
-        password = findViewById(R.id.password);
-        confirmPassword = findViewById(R.id.passwordConfirmed);
+
 
         /*name.setText(user.getName());
         surname.setText(user.getSurname());
@@ -80,9 +84,6 @@ public class RegisterScreen extends AppCompatActivity {
 
 
 
-
-        loginFailed = findViewById(R.id.loginFailedText);
-        inProgress = findViewById(R.id.textInProgress);
 
         Button button3 = findViewById(R.id.loginBtn);
         button3.setOnClickListener(new View.OnClickListener() {
@@ -131,11 +132,13 @@ public class RegisterScreen extends AppCompatActivity {
                 }
 
                 if (correct){
-                    User user = new User();
+                    SignUpForm user = new SignUpForm();
                     user.setPassword(password.getText().toString());
-                    user.setC_password(confirmPassword.getText().toString());
+                    //user.setC_password(confirmPassword.getText().toString());
                     user.setEmail(email.getText().toString());
+                    user.setUsername(email.getText().toString());
                     user.setCourse(course.getText().toString());
+                    user.setRole("user");
                     user.setName(name.getText().toString());
                     user.setSurname(surname.getText().toString());
                     new Register().execute(user);
@@ -146,10 +149,10 @@ public class RegisterScreen extends AppCompatActivity {
             }
         });
     }
-    private class Register extends AsyncTask<User, Void, String> {
+    private class Register extends AsyncTask<SignUpForm, Void, String> {
         private OkHttpClient mClient = new OkHttpClient();
 
-        protected String doInBackground(User... user){
+        protected String doInBackground(SignUpForm... user){
 
             RequestBody requestBody = RequestBody.create(JSON, gson.toJson(user[0]));
 
