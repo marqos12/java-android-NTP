@@ -41,6 +41,9 @@ public class RegisterScreen extends AppCompatActivity {
 
     TextView loginFailed;
     TextView inProgress;
+    String JWT;
+
+    User user;
 
 
     @Override
@@ -48,7 +51,30 @@ public class RegisterScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_screen);
 
+       /* String userString = getIntent().getStringExtra("user");
+        JSONObject userJSON = null;
+        try {
+            userJSON = new JSONObject(userString);
+            Log.d("quiz1",userString);
+            JWT = userJSON.getString("token");
+            user = new User(userJSON.optJSONObject("user"));
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+*/
+        registerURL =getApplicationContext().getString(R.string.url, "/api/register");
+        name = findViewById(R.id.name);
+        surname = findViewById(R.id.surname);
+        email = findViewById(R.id.login);
+        course = findViewById(R.id.course);
+        password = findViewById(R.id.password);
+        confirmPassword = findViewById(R.id.passwordConfirmed);
+
+        /*name.setText(user.getName());
+        surname.setText(user.getSurname());
+        email.setText(user.getEmail());
+        course.setText(user.getCourse());*/
 
 
 

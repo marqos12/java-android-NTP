@@ -48,7 +48,7 @@ public class TestBegin extends AppCompatActivity {
         setContentView(R.layout.activity_test_begin);
         final String id = getIntent().getStringExtra("id");
         final String JWT = getIntent().getStringExtra("jwt");
-        getTestDetailsURL =getApplicationContext().getString(R.string.url, "/api/subject/details/");
+        getTestDetailsURL =getApplicationContext().getString(R.string.url, "/api/subjects/withoutAnswers/");
 
 
         FileOutputStream outputStream;
@@ -80,8 +80,8 @@ public class TestBegin extends AppCompatActivity {
                 Intent intent = new Intent(TestBegin.this, Test.class);
                 intent.putExtra("id", id);
                 intent.putExtra("jwt", JWT);
-                intent.putExtra("multipleChoice", Integer.toString(subject.getMultipleChoice()));
-                intent.putExtra("separatePage", Integer.toString(subject.getSeparatePage()));
+                intent.putExtra("multipleChoice", Boolean.toString(subject.getMultipleChoice()));
+                intent.putExtra("separatePage", Boolean.toString(subject.getSeparatePage()));
                 startActivity(intent);
                 finish();
             }
@@ -144,8 +144,8 @@ public class TestBegin extends AppCompatActivity {
                 }
                 else {
                     subject = new Subject(jsonObject);
-                    about.setText(getApplicationContext().getString(R.string.testName, subject.getName(), subject.getSubject()));
-                    rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((subject.getMultipleChoice().equals(1) ? R.string.multiplyTrue : R.string.multiplyFalse)),
+                    about.setText(getApplicationContext().getString(R.string.testName, subject.getName(), (subject.getSubject().equals("web")?"Technologie sieci WEB":(subject.getSubject().equals("java")?"Programowanie w Java":subject.getSubject()))));
+                    rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((subject.getMultipleChoice() ? R.string.multiplyTrue : R.string.multiplyFalse)),
                             subject.getTime(), subject.getNoQuestions(), subject.getNoQuestions()));
                     id = subject.getId().toString();
                     Integer maxPoints = subject.getNoQuestions();

@@ -9,8 +9,8 @@ public class Answer {
     private Integer id;
     private String text;
     private String idQuestion;
-    private Integer status;
-    private Integer value;
+    private Boolean status;
+    private Boolean value;
 
 
     public Answer(Integer id ){
@@ -20,14 +20,13 @@ public class Answer {
     Answer(JSONObject jsonObject)throws JSONException {
         this.id = (Integer) jsonObject.get("id");
         this.text = (String) jsonObject.get("text");
-        this.idQuestion = (String) jsonObject.get("idQuestion").toString() ;
+        //this.idQuestion = (String) jsonObject.get("id").toString() ;
         try {
-            this.status = (Integer) jsonObject.get("status");
+            this.status = jsonObject.getBoolean("status");
         }catch (Exception e){
             //e.printStackTrace();
         }
-        try {this.value = (Integer)jsonObject.get("value");}
-        catch (Exception e){}
+
     }
 
     public String getText() {
@@ -54,19 +53,19 @@ public class Answer {
         this.id = id;
     }
 
-    public Integer getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
-    public void setValue(Integer value ){
+    public void setValue(Boolean value ){
         this.value = value;
     }
 
-    public Integer getValue(){
+    public Boolean getValue(){
         return value;
     }
 

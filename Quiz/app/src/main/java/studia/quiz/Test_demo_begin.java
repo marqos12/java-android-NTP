@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ public class Test_demo_begin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_begin);
-        getDemoDetailsURL =getApplicationContext().getString(R.string.url, "/api/demo/details/");
+        getDemoDetailsURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withoutAnswers/");
         Intent intent = getIntent();
         final String message = intent.getStringExtra("name");
         FileOutputStream outputStream;
@@ -69,11 +70,13 @@ public class Test_demo_begin extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Log.e("quiz1",Boolean.toString(subject.getMultipleChoice()));
                 Intent intent = new Intent(Test_demo_begin.this, Test_demo.class);
                 intent.putExtra("id", id);
                 intent.putExtra("name", message);
-                intent.putExtra("multipleChoice", Integer.toString(subject.getMultipleChoice()));
-                intent.putExtra("separatePage", Integer.toString(subject.getSeparatePage()));
+                intent.putExtra("multipleChoice", Boolean.toString(subject.getMultipleChoice()));
+                intent.putExtra("separatePage", Boolean.toString(subject.getSeparatePage()));
                 startActivity(intent);
                 finish();
             }
@@ -115,6 +118,7 @@ public class Test_demo_begin extends AppCompatActivity {
                 Response response = mClient.newCall(request).execute();
                 stringResponse = response.body().string();
                 JSONObject jsonObject = new JSONObject(stringResponse);
+                Log.e("quiz1",stringResponse);
                 Subject subject = new Subject(jsonObject);
                 return subject;
             } catch (Exception e) {
@@ -125,8 +129,8 @@ public class Test_demo_begin extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Subject result) {
-            Test_demo_begin.about.setText(getApplicationContext().getString(R.string.testName, result.getName(), result.getSubject()));
-            Test_demo_begin.rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((result.getMultipleChoice().equals(1) ? R.string.multiplyTrue : R.string.multiplyFalse)),
+            Test_demo_begin.about.setText(getApplicationContext().getString(R.string.testName, result.getName(), (result.getSubject().equals("web")?"Technologie sieci WEB":(result.getSubject().equals("java")?"Programowanie w Java":result.getSubject()))));
+            Test_demo_begin.rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((result.getMultipleChoice() ? R.string.multiplyTrue : R.string.multiplyFalse)),
                     result.getTime(), result.getNoQuestions(), result.getNoQuestions()));
             id = result.getId().toString();
             progress.dismiss();

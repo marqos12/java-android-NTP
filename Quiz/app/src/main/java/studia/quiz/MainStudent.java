@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -55,28 +57,38 @@ public class MainStudent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_student);
-        getCourseTestList =getApplicationContext().getString(R.string.url, "/api/subject/list/course/");
+        getCourseTestList =getApplicationContext().getString(R.string.url, "/api/subjects/");
         quizList = findViewById(R.id.quizList);
         String userString = "";
         FileInputStream inputStream;
         try {
+
             inputStream = openFileInput("userName");
             InputStreamReader isr = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(isr);
             userString = bufferedReader.readLine();
             inputStream.close();
-            /*FileOutputStream outputStream;
-            try {
-                outputStream = openFileOutput("userName", Context.MODE_PRIVATE);
-                outputStream.write(userString.getBytes());
-                outputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
+
+
+            JWT = userString;
+            String tokenJSON = JWT.split("\\.")[1];
+            Log.e("quiz1",tokenJSON);
+            byte[] decodedBytes = Base64.decode(tokenJSON, Base64.URL_SAFE);
+            String decodedTokenJSON = new String(decodedBytes, "UTF-8");
+
+            Log.e("quiz1",decodedTokenJSON);
+            JSONObject jsonObject1 = new JSONObject(decodedTokenJSON);
+            JSONObject userJsonObject = jsonObject1.getJSONObject("user");
+            user = new User(userJsonObject);
+
+
+
+            /*
             JSONObject userJSON = new JSONObject(userString);
             Log.d("quiz1",userString);
-            JWT = userJSON.getString("token");
-            user = new User(userJSON.optJSONObject("user"));
+
+             new User(userJSON.optJSONObject("user"));*/
+
             new GetSubjectList().execute(user);
             progress = ProgressDialog.show(MainStudent.this, "Pobieranie danych ...", "Oczekowanie na dane...", true);
 
@@ -91,7 +103,7 @@ public class MainStudent extends AppCompatActivity {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteFile("userName");
+
                 Intent intent = new Intent(MainStudent.this, editProfile.class);
                 intent.putExtra("user", finalUserString);
                 startActivity(intent);

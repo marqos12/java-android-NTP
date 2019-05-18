@@ -13,7 +13,7 @@ public class Result {
 
     public Result(JSONObject jsonObject)throws JSONException {
         this.total = (Integer) jsonObject.get("total");
-        this.correct = (Integer) jsonObject.get("true");
+        this.correct = (Integer) jsonObject.get("correct");
 
     }
 

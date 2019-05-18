@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -57,16 +58,17 @@ public class TestDemoResult extends AppCompatActivity {
     String multipleChoice;
 
     String getDemoQuestionsWAURL;
-
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_result);
         Intent intent = getIntent();
-        getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/question/demo/WA/");
+        getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withAnswers/");
         String result = intent.getStringExtra("result");
         String answers = intent.getStringExtra("answers");
+         name = intent.getStringExtra("name");
         multipleChoice = intent.getStringExtra("multipleChoice");
         mainRelativeLayout = findViewById(R.id.main);
         isPassedText = findViewById(R.id.textSummaryPos);
@@ -133,13 +135,13 @@ public class TestDemoResult extends AppCompatActivity {
             }
         });
 
+        new CheckAnswer().execute(name);
         try {
             JSONArray questionsJason = new JSONArray(answers);
             for (int i = 0; i < questionsJason.length(); i++) {
                 JSONObject jsonObject = questionsJason.getJSONObject(i);
                 Question question = new Question(jsonObject);
                 questions.add(question);
-                new CheckAnswer().execute(question);
             }
 
         } catch (JSONException e) {
@@ -148,49 +150,51 @@ public class TestDemoResult extends AppCompatActivity {
     }
 
 
-    private class CheckAnswer extends AsyncTask<Question, Void, Question> {
+    private class CheckAnswer extends AsyncTask<String, Void, String> {
         private OkHttpClient mClient = new OkHttpClient();
 
-        protected Question doInBackground(Question... question) {
+        protected String doInBackground(String... name) {
 
             String url = getDemoQuestionsWAURL;
-            Question respQuestion = question[0];
             try {
                 com.squareup.okhttp.Request request = new Request
                         .Builder()
-                        .url(url + Integer.toString(respQuestion.getId()))
+                        .url(url + name[0])
                         .build();
                 mClient.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
 
                 Response response = mClient.newCall(request).execute();
                 String stringResponse = response.body().string();
-                JSONObject jsonObject = new JSONObject(stringResponse);
-                Question newQuestion = new Question(jsonObject);
-                int i = 0;
-                for (Answer answer : respQuestion.getAnswers()) {
-                    answer.setStatus(newQuestion.getAnswers().get(i).getStatus());
-                    i++;
-                }
-                respQuestion = new Question(jsonObject);
-                return respQuestion;
+
+                return stringResponse;
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+
             return null;
         }
 
 
-        protected void onPostExecute(Question result) {
-            counter++;
-            seeAnswers.setText(getApplicationContext().getString(R.string.seeAnswersHint, counter, questions.size()));
-            if (counter >= questions.size() - 1) {
+        protected void onPostExecute(String response) {
+
+
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray questionsJArray = jsonObject.getJSONArray("questions");
+                for (int i = 0; i < questionsJArray.length(); i++) {
+                    Log.e("quiz1",questionsJArray.getJSONObject(i).toString());
+                    JSONObject Jquestion = questionsJArray.getJSONObject(i);
+                    Question question = new Question(Jquestion);
+                    for(int j = 0; j < 4; j++) questions.get(i).getAnswers().get(j).setValue(question.getAnswers().get(j).getStatus());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
                 seeAnswers.setText(getApplicationContext().getString(R.string.seeAnswers));
                 loaded = true;
                 seeAnswers.setBackgroundColor(getResources().getColor(R.color.buttonBackgroundGray));
                 seeAnswers.setTextColor(getResources().getColor(R.color.blackText));
-            }
+
         }
     }
 
@@ -198,6 +202,8 @@ public class TestDemoResult extends AppCompatActivity {
     private void showAnswers() {
         Integer i = new Integer(1);
         for (Question question : questions) {
+
+
             RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
             relativeLayout.setId(View.generateViewId());
             RelativeLayout.LayoutParams rparam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -232,7 +238,7 @@ public class TestDemoResult extends AppCompatActivity {
             radioGroup.setId(View.generateViewId());
 
             Boolean positive = true;
-            if (multipleChoice.equals("0")) {
+            if (multipleChoice.equals("false")) {
                 for (int j = 0; j < 4; j++) {
                     RadioButton answer1 = new RadioButton(getApplicationContext());
                     RadioGroup.LayoutParams paramsAnswer1 = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -240,15 +246,15 @@ public class TestDemoResult extends AppCompatActivity {
                     answer1.setLayoutParams(paramsAnswer1);
                     answer1.setId(View.generateViewId());
                     answer1.setEnabled(false);
-                    answer1.setChecked(question.getAnswers().get(j).getValue().equals(1));
-                    if (question.getAnswers().get(j).getValue().equals(1)) {
-                        if (question.getAnswers().get(j).getStatus().equals(1)) {
+                    answer1.setChecked(question.getAnswers().get(j).getStatus());
+                    if (question.getAnswers().get(j).getStatus()) {
+                        if (question.getAnswers().get(j).getValue()) {
                             answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.positive, 0);
                         } else {
                             answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.negative, 0);
                             positive = false;
                         }
-                    } else if (question.getAnswers().get(j).getStatus().equals(1)) {
+                    } else if (question.getAnswers().get(j).getValue()) {
                         positive = false;
                         answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.positive, 0);
                     }
@@ -264,15 +270,15 @@ public class TestDemoResult extends AppCompatActivity {
                     answer1.setLayoutParams(paramsAnswer1);
                     answer1.setId(View.generateViewId());
                     answer1.setEnabled(false);
-                    answer1.setChecked(question.getAnswers().get(j).getValue().equals(1));
-                    if (question.getAnswers().get(j).getValue().equals(1)) {
-                        if (question.getAnswers().get(j).getStatus().equals(1)) {
+                    answer1.setChecked(question.getAnswers().get(j).getStatus());
+                    if (question.getAnswers().get(j).getStatus()) {
+                        if (question.getAnswers().get(j).getValue()) {
                             answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.positive, 0);
                         } else {
                             answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.negative, 0);
                             positive = false;
                         }
-                    } else if (question.getAnswers().get(j).getStatus().equals(1)) {
+                    } else if (question.getAnswers().get(j).getValue()) {
                         positive = false;
                         answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.positive, 0);
                     }

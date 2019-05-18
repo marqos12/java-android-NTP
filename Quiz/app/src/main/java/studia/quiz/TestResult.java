@@ -64,7 +64,7 @@ String JWT;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_result);
         Intent intent = getIntent();
-        getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/question/WA/");
+        getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/subjects/withAnswers/");
         String result = intent.getStringExtra("result");
         String answers = intent.getStringExtra("answers");
         multipleChoice = intent.getStringExtra("multipleChoice");
@@ -110,38 +110,39 @@ String JWT;
                 finish();
             }
         });
-
+        String name = "";
+        FileInputStream inputStream;
+        try {
+            inputStream = openFileInput("testName");
+            InputStreamReader isr = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            name = bufferedReader.readLine();
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Button repeatButton = findViewById(R.id.buttonRepeat);
+        final String finalName = name;
         repeatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = "";
-                FileInputStream inputStream;
-                try {
-                    inputStream = openFileInput("testName");
-                    InputStreamReader isr = new InputStreamReader(inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(isr);
-                    name = bufferedReader.readLine();
-                    inputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
 
                 Intent intent = new Intent(TestResult.this, TestBegin.class);
-                intent.putExtra("id", name);
+                intent.putExtra("id", finalName);
                 intent.putExtra("jwt", JWT);
                 startActivity(intent);
                 finish();
             }
         });
 
+        new CheckAnswer().execute(name);
         try {
             JSONArray questionsJason = new JSONArray(answers);
             for (int i = 0; i < questionsJason.length(); i++) {
                 JSONObject jsonObject = questionsJason.getJSONObject(i);
                 Question question = new Question(jsonObject);
                 questions.add(question);
-                new CheckAnswer().execute(question);
             }
 
         } catch (JSONException e) {
@@ -150,24 +151,24 @@ String JWT;
     }
 
 
-    private class CheckAnswer extends AsyncTask<Question, Void, Question> {
+    private class CheckAnswer extends AsyncTask<String, Void, String> {
         private OkHttpClient mClient = new OkHttpClient();
 
-        protected Question doInBackground(Question... question) {
+        protected String doInBackground(String... question) {
 
             String url = getDemoQuestionsWAURL;
-            Question respQuestion = question[0];
+            //Question respQuestion = question[0];
             try {
                 com.squareup.okhttp.Request request = new Request
                         .Builder()
                         .header("Authorization", "Bearer "+JWT)
-                        .url(url + Integer.toString(respQuestion.getId()))
+                        .url(url + question[0])
                         .build();
                 mClient.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
 
                 Response response = mClient.newCall(request).execute();
                 String stringResponse = response.body().string();
-                Log.d("quiz1",url + Integer.toString(respQuestion.getId()));
+                /*Log.d("quiz1",url + Integer.toString(respQuestion.getId()));
                 Log.d("quiz1",JWT);
                 Log.d("quiz1",stringResponse);
                 JSONObject jsonObject = new JSONObject(stringResponse);
@@ -177,26 +178,40 @@ String JWT;
                     answer.setStatus(newQuestion.getAnswers().get(i).getStatus());
                     i++;
                 }
-                respQuestion = new Question(jsonObject);
-                return respQuestion;
+                respQuestion = new Question(jsonObject);*/
+                return stringResponse;
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+
             return null;
         }
 
 
-        protected void onPostExecute(Question result) {
-            counter++;
+        protected void onPostExecute(String response) {
+            /*counter++;
             seeAnswers.setText(getApplicationContext().getString(R.string.seeAnswersHint, counter, questions.size()));
-            if (counter >= questions.size() - 1) {
+            if (counter >= questions.size() - 1) {*/
+            Log.e("quiz1",response);
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray questionsJArray = jsonObject.getJSONArray("questions");
+                for (int i = 0; i < questionsJArray.length(); i++) {
+                    Log.e("quiz1",questionsJArray.getJSONObject(i).toString());
+                    JSONObject Jquestion = questionsJArray.getJSONObject(i);
+                    Question question = new Question(Jquestion);
+                    for(int j = 0; j < 4; j++) questions.get(i).getAnswers().get(j).setValue(question.getAnswers().get(j).getStatus());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
                 seeAnswers.setText(getApplicationContext().getString(R.string.seeAnswers));
                 loaded = true;
                 seeAnswers.setBackgroundColor(getResources().getColor(R.color.buttonBackgroundGray));
                 seeAnswers.setTextColor(getResources().getColor(R.color.blackText));
-            }
+            //}
         }
     }
 
@@ -238,7 +253,7 @@ String JWT;
             radioGroup.setId(View.generateViewId());
 
             Boolean positive = true;
-            if (multipleChoice.equals("0")) {
+            if (multipleChoice.equals("false")) {
                 for (int j = 0; j < 4; j++) {
                     RadioButton answer1 = new RadioButton(getApplicationContext());
                     RadioGroup.LayoutParams paramsAnswer1 = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -246,15 +261,15 @@ String JWT;
                     answer1.setLayoutParams(paramsAnswer1);
                     answer1.setId(View.generateViewId());
                     answer1.setEnabled(false);
-                    answer1.setChecked(question.getAnswers().get(j).getValue().equals(1));
-                    if (question.getAnswers().get(j).getValue().equals(1)) {
-                        if (question.getAnswers().get(j).getStatus().equals(1)) {
+                    answer1.setChecked(question.getAnswers().get(j).getStatus());
+                    if (question.getAnswers().get(j).getStatus()) {
+                        if (question.getAnswers().get(j).getValue()) {
                             answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.positive, 0);
                         } else {
                             answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.negative, 0);
                             positive = false;
                         }
-                    } else if (question.getAnswers().get(j).getStatus().equals(1)) {
+                    } else if (question.getAnswers().get(j).getValue()) {
                         positive = false;
                         answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.positive, 0);
                     }
@@ -270,15 +285,15 @@ String JWT;
                     answer1.setLayoutParams(paramsAnswer1);
                     answer1.setId(View.generateViewId());
                     answer1.setEnabled(false);
-                    answer1.setChecked(question.getAnswers().get(j).getValue().equals(1));
-                    if (question.getAnswers().get(j).getValue().equals(1)) {
-                        if (question.getAnswers().get(j).getStatus().equals(1)) {
+                    answer1.setChecked(question.getAnswers().get(j).getStatus());
+                    if (question.getAnswers().get(j).getStatus()) {
+                        if (question.getAnswers().get(j).getValue()) {
                             answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.positive, 0);
                         } else {
                             answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.negative, 0);
                             positive = false;
                         }
-                    } else if (question.getAnswers().get(j).getStatus().equals(1)) {
+                    } else if (question.getAnswers().get(j).getValue()) {
                         positive = false;
                         answer1.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.positive, 0);
                     }

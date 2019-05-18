@@ -38,10 +38,10 @@
     <string name="logout">Wyloguj się</string>
     <string name="editProfile">Edytuj profil</string>
     <string name="editProfileString">Edycja Profilu</string>
+    <string name="editted">Edycja udana</string>
+    <string name="relogin">Wymagane ponowne zalogowanie się</string>
 
-
-
-    <string name="url">http://192.168.43.89:80/web%s</string>
+    <string name="url">http://89.188.200.133:8080%s</string>
 
     <string name="test">%d</string>
     <string name="title_activity_login">Sign in</string>

@@ -21,7 +21,7 @@ public class Question {
     public Question(JSONObject jsonObject)throws JSONException {
         this.id = (Integer) jsonObject.get("id");
        // this.category = (String) jsonObject.get("category");
-        this.idSubject = (Integer) jsonObject.get("idSubject");
+//        this.idSubject = (Integer) jsonObject.get("idSubject");
         this.text = (String) jsonObject.get("text");
         if (jsonObject.optString("code").toString()!="null"&&jsonObject.optString("code").toString()!="")
             this.code = (String) jsonObject.get("code");

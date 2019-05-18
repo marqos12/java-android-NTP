@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,12 +26,18 @@ import com.squareup.okhttp.Response;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import studia.quiz.model.Answer;
 import studia.quiz.model.Question;
+import studia.quiz.model.SignInForm;
 import studia.quiz.model.User;
 
 public class LoginScreen extends AppCompatActivity {
@@ -44,11 +51,48 @@ public class LoginScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
-        loginURL =getApplicationContext().getString(R.string.url, "/api/login");
+        loginURL =getApplicationContext().getString(R.string.url, "/api/auth/signin");
         final EditText login = findViewById(R.id.login);
         final EditText password = findViewById(R.id.password);
         loginFailed = findViewById(R.id.loginFailedText);
         inProgress = findViewById(R.id.textInProgress);
+
+
+        FileInputStream inputStream;
+        try {
+            inputStream = openFileInput("userName");
+            InputStreamReader isr = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            String userString = bufferedReader.readLine();
+            inputStream.close();
+            String tokenJSON = userString.split("\\.")[1];
+            Log.e("quiz1",tokenJSON);
+            byte[] decodedBytes = Base64.decode(tokenJSON, Base64.URL_SAFE);
+            String decodedTokenJSON = new String(decodedBytes, "UTF-8");
+            JSONObject jsonObject1 = new JSONObject(decodedTokenJSON);
+            JSONObject userJsonObject = jsonObject1.getJSONObject("user");
+            User user = new User(userJsonObject);
+
+            Log.e("quiz1",user.getRole());
+            if(user.getRole().equals("ROLE_USER")){
+
+                Intent intent = new Intent(LoginScreen.this, MainStudent.class);
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(LoginScreen.this, MainTeacher.class);
+                startActivity(intent);
+            }
+            finish();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         Button button3 = findViewById(R.id.loginBtn);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,8 +107,8 @@ public class LoginScreen extends AppCompatActivity {
                     password.setBackgroundColor(getResources().getColor(R.color.textNegative));
                 }
                 else {
-                    User user = new User();
-                    user.setEmail(login.getText().toString());
+                    SignInForm user = new SignInForm();
+                    user.setUsername(login.getText().toString());
                     user.setPassword(password.getText().toString());
                     new LogIn().execute(user);
                     loginFailed.setText("");
@@ -83,10 +127,10 @@ public class LoginScreen extends AppCompatActivity {
 
     }
 
-    private class LogIn extends AsyncTask<User, Void, String> {
+    private class LogIn extends AsyncTask<SignInForm, Void, String> {
         private OkHttpClient mClient = new OkHttpClient();
 
-        protected String doInBackground(User... user){
+        protected String doInBackground(SignInForm... user){
 
             RequestBody requestBody = RequestBody.create(JSON, gson.toJson(user[0]));
 
@@ -110,23 +154,34 @@ public class LoginScreen extends AppCompatActivity {
 
         protected void onPostExecute(String userResult) {
             inProgress.setVisibility(View.INVISIBLE);
+            Log.e("quiz1",userResult);
             try {
                 JSONObject jsonObject = new JSONObject(userResult);
+
                 if(jsonObject.has("error")){
                     loginFailed.setText("Logowanie nie powiodło się");
                 }
                 else {
-                    JSONObject userJsonObject = jsonObject.getJSONObject("user");
+                    String token = jsonObject.getString("accessToken");
+                    String tokenJSON = token.split("\\.")[1];
+                    Log.e("quiz1",tokenJSON);
+                    byte[] decodedBytes = Base64.decode(tokenJSON, Base64.URL_SAFE);
+                    String decodedTokenJSON = new String(decodedBytes, "UTF-8");
+
+                    Log.e("quiz1",decodedTokenJSON);
+                    JSONObject jsonObject1 = new JSONObject(decodedTokenJSON);
+                    JSONObject userJsonObject = jsonObject1.getJSONObject("user");
                     User respUsser = new User(userJsonObject);
                     FileOutputStream outputStream;
                     try {
                         outputStream = openFileOutput("userName", Context.MODE_PRIVATE);
-                        outputStream.write(userResult.getBytes());
+                        outputStream.write(token.getBytes());
                         outputStream.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if(respUsser.getRole().equals("s")){
+                    Log.e("quiz1",respUsser.getRole());
+                    if(respUsser.getRole().equals("ROLE_USER")){
 
                         Intent intent = new Intent(LoginScreen.this, MainStudent.class);
                         startActivity(intent);
@@ -138,6 +193,8 @@ public class LoginScreen extends AppCompatActivity {
                     finish();
                 }
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 

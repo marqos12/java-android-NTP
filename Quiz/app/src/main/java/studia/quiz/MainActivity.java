@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import studia.quiz.model.User;
@@ -22,18 +26,23 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String userString = "";
         FileInputStream inputStream;
         try {
             inputStream = openFileInput("userName");
             InputStreamReader isr = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(isr);
-            userString = bufferedReader.readLine();
+            String userString = bufferedReader.readLine();
             inputStream.close();
-            JSONObject userJSON = new JSONObject(userString);
-            Log.d("quiz1",userString);
-            User user = new User(userJSON.optJSONObject("user"));
-            if(user.getRole().equals("s")){
+            String tokenJSON = userString.split("\\.")[1];
+            Log.e("quiz1",tokenJSON);
+            byte[] decodedBytes = Base64.decode(tokenJSON, Base64.URL_SAFE);
+            String decodedTokenJSON = new String(decodedBytes, "UTF-8");
+            JSONObject jsonObject1 = new JSONObject(decodedTokenJSON);
+            JSONObject userJsonObject = jsonObject1.getJSONObject("user");
+            User user = new User(userJsonObject);
+
+            Log.e("quiz1",user.getRole());
+            if(user.getRole().equals("ROLE_USER")){
 
                 Intent intent = new Intent(MainActivity.this, MainStudent.class);
                 startActivity(intent);
@@ -43,7 +52,11 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
             finish();
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -52,7 +65,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Test_demo_begin.class);
-                intent.putExtra("name", "web");
+                intent.putExtra("name", "demoweb");
                 startActivity(intent);
                 finish();
             }
@@ -63,7 +76,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Test_demo_begin.class);
-                intent.putExtra("name", "java");
+                intent.putExtra("name", "demojava");
                 startActivity(intent);
                 finish();
             }

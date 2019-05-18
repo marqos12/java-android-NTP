@@ -19,6 +19,7 @@ public class User {
         id = (Integer) jsonObject.get("id");
         name = jsonObject.getString("name");
         surname = jsonObject.getString("surname");
+        username = jsonObject.getString("username");
         role = jsonObject.getString("role");
         course = jsonObject.getString("course");
         email = jsonObject.getString("email");

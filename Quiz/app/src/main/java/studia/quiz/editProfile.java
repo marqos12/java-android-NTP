@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -57,7 +59,7 @@ public class editProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        editProfileURL =getApplicationContext().getString(R.string.url, "/api/userOwn");
+        editProfileURL =getApplicationContext().getString(R.string.url, "/api/users/update");
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         email = findViewById(R.id.login);
@@ -72,6 +74,9 @@ public class editProfile extends AppCompatActivity {
         JSONObject userJSON = null;
         FileInputStream inputStream;
         try {
+
+            File file = getBaseContext().getFileStreamPath("userName");
+            Log.e("quiz1", Boolean.toString(file.exists()));
             inputStream = openFileInput("userName");
             InputStreamReader isr = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(isr);
@@ -85,10 +90,18 @@ public class editProfile extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }*/
-            userJSON = new JSONObject(userString);
-            Log.d("quiz1",userString);
-            JWT = userJSON.getString("token");
-            user = new User(userJSON.optJSONObject("user"));
+
+            JWT = userString;
+            String tokenJSON = JWT.split("\\.")[1];
+            Log.e("quiz1",tokenJSON);
+            byte[] decodedBytes = Base64.decode(tokenJSON, Base64.URL_SAFE);
+            String decodedTokenJSON = new String(decodedBytes, "UTF-8");
+
+            Log.e("quiz1",decodedTokenJSON);
+            JSONObject jsonObject1 = new JSONObject(decodedTokenJSON);
+            JSONObject userJsonObject = jsonObject1.getJSONObject("user");
+            user = new User(userJsonObject);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -110,7 +123,7 @@ public class editProfile extends AppCompatActivity {
         surname.setText(user.getSurname());
         email.setText(user.getEmail());
         course.setText(user.getCourse());
-
+        email.setKeyListener(null);
 
 
 
@@ -154,14 +167,17 @@ public class editProfile extends AppCompatActivity {
                 }
 
                 if (correct){
-                    User user = new User();
-                    user.setPassword(password.getText().toString());
-                    user.setC_password(confirmPassword.getText().toString());
-                    user.setEmail(email.getText().toString());
-                    user.setCourse(course.getText().toString());
-                    user.setName(name.getText().toString());
-                    user.setSurname(surname.getText().toString());
-                    new EditUser().execute(user);
+                    Log.e("quiz1",user.getUsername());
+                    User userN = new User();
+                    userN.setId(user.getId());
+                    userN.setPassword(password.getText().toString());
+                    userN.setC_password(confirmPassword.getText().toString());
+                    userN.setEmail(user.getEmail());
+                    userN.setUsername(user.getUsername());
+                    userN.setCourse(course.getText().toString());
+                    userN.setName(name.getText().toString());
+                    userN.setSurname(surname.getText().toString());
+                    new EditUser().execute(userN);
                     loginFailed.setText("");
                     inProgress.setVisibility(View.VISIBLE);
                 }
@@ -173,14 +189,14 @@ public class editProfile extends AppCompatActivity {
         private OkHttpClient mClient = new OkHttpClient();
 
         protected String doInBackground(User... user){
-
+            Log.e("quiz1",Integer.toString(user[0].getId()));
             RequestBody requestBody = RequestBody.create(JSON, gson.toJson(user[0]));
 
             try {
                 com.squareup.okhttp.Request request = new Request
                         .Builder()
                         .header("Authorization", "Bearer "+JWT)
-                        .post(requestBody)
+                        .put(requestBody)
                         .url(editProfileURL)
                         .build();
                 mClient.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
@@ -204,10 +220,9 @@ public class editProfile extends AppCompatActivity {
                     loginFailed.setText("Edycja nie powiodła się");
                 }
                 else {
-                    JSONObject userJsonObject = jsonObject.getJSONObject("user");
-                    User respUsser = new User(userJsonObject);
 
-                    Intent intent = new Intent(editProfile.this, editProfile.class);
+                    deleteFile("userName");
+                    Intent intent = new Intent(editProfile.this, ReLogin.class);
                     startActivity(intent);
                     finish();
                 }
