@@ -61,28 +61,6 @@ public class RegisterScreen extends AppCompatActivity {
 
         loginFailed = findViewById(R.id.loginFailedText);
         inProgress = findViewById(R.id.textInProgress);
-       /* String userString = getIntent().getStringExtra("user");
-        JSONObject userJSON = null;
-        try {
-            userJSON = new JSONObject(userString);
-            Log.d("quiz1",userString);
-            JWT = userJSON.getString("token");
-            user = new User(userJSON.optJSONObject("user"));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-*/
-
-
-        /*name.setText(user.getName());
-        surname.setText(user.getSurname());
-        email.setText(user.getEmail());
-        course.setText(user.getCourse());*/
-
-
-
-
 
 
         Button button3 = findViewById(R.id.loginBtn);
@@ -185,12 +163,16 @@ public class RegisterScreen extends AppCompatActivity {
                 else {
                     JSONObject userJsonObject = jsonObject.getJSONObject("user");
                     User respUsser = new User(userJsonObject);
+                    inProgress.setVisibility(View.VISIBLE);
+                    inProgress.setText("Utworzono nowe konto!");
 
                     Intent intent = new Intent(RegisterScreen.this, LoginScreen.class);
                     startActivity(intent);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+                inProgress.setVisibility(View.VISIBLE);
+                inProgress.setText("Utworzono nowe konto!");
             }
 
         }

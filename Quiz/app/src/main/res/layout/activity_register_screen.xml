@@ -137,7 +137,7 @@
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
             android:textAlignment="center"
-            android:text="Logowanie..."
+            android:text="Rejestracja..."
             android:visibility="invisible"
             android:textColor="@color/textWhite"/>
 

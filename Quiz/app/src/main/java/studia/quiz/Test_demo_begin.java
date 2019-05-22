@@ -129,7 +129,7 @@ public class Test_demo_begin extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Subject result) {
-            Test_demo_begin.about.setText(getApplicationContext().getString(R.string.testName, result.getName(), (result.getSubject().equals("web")?"Technologie sieci WEB":(result.getSubject().equals("java")?"Programowanie w Java":result.getSubject()))));
+            Test_demo_begin.about.setText(getApplicationContext().getString(R.string.testName, result.getName(), (result.getSubject().equals("web")?"Technologie Interetowe":(result.getSubject().equals("java")?"Język Java":result.getSubject()))));
             Test_demo_begin.rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((result.getMultipleChoice() ? R.string.multiplyTrue : R.string.multiplyFalse)),
                     result.getTime(), result.getNoQuestions(), result.getNoQuestions()));
             id = result.getId().toString();

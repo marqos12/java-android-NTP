@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Quiz</string>
     <string name="logo">logo</string>
-    <string name="quiz1">Technologie Sieci WEB</string>
-    <string name="quiz2">Programowanie \nw języku Java</string>
+    <string name="quiz1">Technologie Internetowe</string>
+    <string name="quiz2">Język Java</string>
     <string name="demo">Rozwiąż test demo</string>
     <string name="hello">Witaj!</string>
-    <string name="testName">Przed Tobą test o nazwie: %s \nz przedmiotu %s</string>
+    <string name="testName">Przed Tobą test o nazwie: %s \nz tematu %s</string>
     <string name="rules">ZASADY:\nJest to test %s wyboru.\nCzas na rozwiązanie testu wynosi: %d min.
         \nNależy zaznaczyć jedynie poprawne odpowiedzi.\nTest zawiera %d pytań, każde za 1 punkt.\nIlość punktów możliwa do zdobycia wynosi %d.</string>
     <string name="multiplyTrue">wielokrotnego</string>
@@ -41,7 +41,7 @@
     <string name="editted">Edycja udana</string>
     <string name="relogin">Wymagane ponowne zalogowanie się</string>
 
-    <string name="url">http://89.188.200.133:8080%s</string>
+    <string name="url">http://192.168.43.89:8080%s</string>
 
     <string name="test">%d</string>
     <string name="title_activity_login">Sign in</string>
