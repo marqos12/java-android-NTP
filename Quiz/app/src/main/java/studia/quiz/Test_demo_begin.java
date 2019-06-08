@@ -92,14 +92,15 @@ public class Test_demo_begin extends AppCompatActivity {
             }
         });
         try {
-            JSONObject jsonObject = new JSONObject(getApplicationContext().getString((message == "demojava") ? R.string.demojava : R.string.demoweb));
+            Log.e("quiz1",message);
+            JSONObject jsonObject = new JSONObject(getApplicationContext().getString((message.equals("demojava")) ? R.string.demojava : R.string.demoweb));
 
-            Subject result = new Subject(jsonObject);
+            Subject result = subject = new Subject(jsonObject);
             Test_demo_begin.about.setText(getApplicationContext().getString(R.string.testName, result.getName(), (result.getSubject().equals("web") ? "Technologie Interetowe" : (result.getSubject().equals("java") ? "Język Java" : result.getSubject()))));
             Test_demo_begin.rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((result.getMultipleChoice() ? R.string.multiplyTrue : R.string.multiplyFalse)),
                     result.getTime(), result.getNoQuestions(), result.getNoQuestions()));
             id = result.getId().toString();
-            progress.dismiss();
+           // progress.dismiss();
             Integer maxPoints = result.getNoQuestions();
 
             points = getApplicationContext().getString(R.string.points, floor(maxPoints * 0.59), ceil(maxPoints * 0.60),
@@ -107,7 +108,7 @@ public class Test_demo_begin extends AppCompatActivity {
                     floor(maxPoints * 0.94), ceil(maxPoints * 0.95), maxPoints);
         }
         catch (Exception e){
-
+            Log.e("quiz1",e.getMessage());
         }
         /*try {
             //String url = getDemoDetailsURL + message;
