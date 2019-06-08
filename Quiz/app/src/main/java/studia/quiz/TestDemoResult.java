@@ -68,18 +68,23 @@ public class TestDemoResult extends AppCompatActivity {
         isPassedText = findViewById(R.id.textSummaryPos);
         summarry = findViewById(R.id.textSummary);
         seeAnswers = findViewById(R.id.buttonSeeAnswers);
+        final Button back2button = findViewById(R.id.buttonBack2);
+        final Button repeat2button = findViewById(R.id.buttonRepeat2);
         seeAnswers.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (loaded) {
                     showAnswers();
+                    back2button.setVisibility(View.VISIBLE);
+                    repeat2button.setVisibility(View.VISIBLE);
                 }
             }
         });
         seeAnswers.setBackgroundColor(getResources().getColor(R.color.buttonBackgroundDisable));
         seeAnswers.setTextColor(getResources().getColor(R.color.buttonTextDisable));
 
-        Button backButton = findViewById(R.id.buttonBack);
+
+        final Button backButton = findViewById(R.id.buttonBack);
         backButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +94,7 @@ public class TestDemoResult extends AppCompatActivity {
             }
         });
 
-        Button repeatButton = findViewById(R.id.buttonRepeat);
+        final Button repeatButton = findViewById(R.id.buttonRepeat);
         repeatButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +114,20 @@ public class TestDemoResult extends AppCompatActivity {
                 intent.putExtra("name", name);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        repeat2button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                repeatButton.callOnClick();
+            }
+        });
+
+        back2button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backButton.callOnClick();
             }
         });
 
