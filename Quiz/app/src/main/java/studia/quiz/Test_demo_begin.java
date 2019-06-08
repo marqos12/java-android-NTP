@@ -33,7 +33,7 @@ public class Test_demo_begin extends AppCompatActivity {
     String points = "";
     Button showPoints;
     Subject subject;
-    String getDemoDetailsURL ;
+    //String getDemoDetailsURL ;
 
 
 
@@ -41,7 +41,7 @@ public class Test_demo_begin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_begin);
-        getDemoDetailsURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withoutAnswers/");
+        //getDemoDetailsURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withoutAnswers/");
         Intent intent = getIntent();
         final String message = intent.getStringExtra("name");
         FileOutputStream outputStream;
@@ -91,17 +91,34 @@ public class Test_demo_begin extends AppCompatActivity {
                 showPoints.setVisibility(View.INVISIBLE);
             }
         });
-
         try {
-            String url = getDemoDetailsURL + message;
+            JSONObject jsonObject = new JSONObject(getApplicationContext().getString((message == "demojava") ? R.string.demojava : R.string.demoweb));
+
+            Subject result = new Subject(jsonObject);
+            Test_demo_begin.about.setText(getApplicationContext().getString(R.string.testName, result.getName(), (result.getSubject().equals("web") ? "Technologie Interetowe" : (result.getSubject().equals("java") ? "Język Java" : result.getSubject()))));
+            Test_demo_begin.rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((result.getMultipleChoice() ? R.string.multiplyTrue : R.string.multiplyFalse)),
+                    result.getTime(), result.getNoQuestions(), result.getNoQuestions()));
+            id = result.getId().toString();
+            progress.dismiss();
+            Integer maxPoints = result.getNoQuestions();
+
+            points = getApplicationContext().getString(R.string.points, floor(maxPoints * 0.59), ceil(maxPoints * 0.60),
+                    floor(maxPoints * 0.64), ceil(maxPoints * 0.65), floor(maxPoints * 0.74), ceil(maxPoints * 0.75), floor(maxPoints * (0.84)), ceil(maxPoints * (0.85)),
+                    floor(maxPoints * 0.94), ceil(maxPoints * 0.95), maxPoints);
+        }
+        catch (Exception e){
+
+        }
+        /*try {
+            //String url = getDemoDetailsURL + message;
             GetTestDetails getTestDetails = new GetTestDetails();
             getTestDetails.execute(url);
             progress = ProgressDialog.show(Test_demo_begin.this, "Pobieranie danych ...", "Oczekowanie na dane...", true);
         } catch (Exception e) {
 
-        }
+        }*/
     }
-
+/*
     private class GetTestDetails extends AsyncTask<String, Void, Subject> {
 
         private OkHttpClient mClient = new OkHttpClient();
@@ -142,4 +159,5 @@ public class Test_demo_begin extends AppCompatActivity {
             subject = result;
         }
     }
+    */
 }

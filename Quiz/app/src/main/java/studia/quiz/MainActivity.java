@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button button3 = findViewById(R.id.loginBtn);
+       /* Button button3 = findViewById(R.id.loginBtn);
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +100,6 @@ public class MainActivity extends Activity {
                 startActivity(intent);
 
             }
-        });
+        });*/
     }
 }
