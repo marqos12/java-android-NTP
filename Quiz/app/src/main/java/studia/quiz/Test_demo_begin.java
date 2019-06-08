@@ -33,7 +33,6 @@ public class Test_demo_begin extends AppCompatActivity {
     String points = "";
     Button showPoints;
     Subject subject;
-    //String getDemoDetailsURL ;
 
 
 
@@ -41,7 +40,6 @@ public class Test_demo_begin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_begin);
-        //getDemoDetailsURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withoutAnswers/");
         Intent intent = getIntent();
         final String message = intent.getStringExtra("name");
         FileOutputStream outputStream;
@@ -70,8 +68,6 @@ public class Test_demo_begin extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.e("quiz1",Boolean.toString(subject.getMultipleChoice()));
                 Intent intent = new Intent(Test_demo_begin.this, Test_demo.class);
                 intent.putExtra("id", id);
                 intent.putExtra("name", message);
@@ -92,7 +88,6 @@ public class Test_demo_begin extends AppCompatActivity {
             }
         });
         try {
-            Log.e("quiz1",message);
             JSONObject jsonObject = new JSONObject(getApplicationContext().getString((message.equals("demojava")) ? R.string.demojava : R.string.demoweb));
 
             Subject result = subject = new Subject(jsonObject);
@@ -100,7 +95,6 @@ public class Test_demo_begin extends AppCompatActivity {
             Test_demo_begin.rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((result.getMultipleChoice() ? R.string.multiplyTrue : R.string.multiplyFalse)),
                     result.getTime(), result.getNoQuestions(), result.getNoQuestions()));
             id = result.getId().toString();
-           // progress.dismiss();
             Integer maxPoints = result.getNoQuestions();
 
             points = getApplicationContext().getString(R.string.points, floor(maxPoints * 0.59), ceil(maxPoints * 0.60),
@@ -110,55 +104,5 @@ public class Test_demo_begin extends AppCompatActivity {
         catch (Exception e){
             Log.e("quiz1",e.getMessage());
         }
-        /*try {
-            //String url = getDemoDetailsURL + message;
-            GetTestDetails getTestDetails = new GetTestDetails();
-            getTestDetails.execute(url);
-            progress = ProgressDialog.show(Test_demo_begin.this, "Pobieranie danych ...", "Oczekowanie na dane...", true);
-        } catch (Exception e) {
-
-        }*/
     }
-/*
-    private class GetTestDetails extends AsyncTask<String, Void, Subject> {
-
-        private OkHttpClient mClient = new OkHttpClient();
-
-        @Override
-        protected Subject doInBackground(String... url) {
-            String stringResponse = "";
-            try {
-                Request request = new Request
-                        .Builder()
-                        .method("GET", null)
-                        .url(url[0])
-                        .build();
-                Response response = mClient.newCall(request).execute();
-                stringResponse = response.body().string();
-                JSONObject jsonObject = new JSONObject(stringResponse);
-                Log.e("quiz1",stringResponse);
-                Subject subject = new Subject(jsonObject);
-                return subject;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Subject result) {
-            Test_demo_begin.about.setText(getApplicationContext().getString(R.string.testName, result.getName(), (result.getSubject().equals("web")?"Technologie Interetowe":(result.getSubject().equals("java")?"Język Java":result.getSubject()))));
-            Test_demo_begin.rules.setText(getApplicationContext().getString(R.string.rules, getApplicationContext().getString((result.getMultipleChoice() ? R.string.multiplyTrue : R.string.multiplyFalse)),
-                    result.getTime(), result.getNoQuestions(), result.getNoQuestions()));
-            id = result.getId().toString();
-            progress.dismiss();
-            Integer maxPoints = result.getNoQuestions();
-
-            points = getApplicationContext().getString(R.string.points, floor(maxPoints * 0.59), ceil(maxPoints * 0.60),
-                    floor(maxPoints * 0.64), ceil(maxPoints * 0.65), floor(maxPoints * 0.74), ceil(maxPoints * 0.75), floor(maxPoints * (0.84)), ceil(maxPoints * (0.85)),
-                    floor(maxPoints * 0.94), ceil(maxPoints * 0.95), maxPoints);
-            subject = result;
-        }
-    }
-    */
 }

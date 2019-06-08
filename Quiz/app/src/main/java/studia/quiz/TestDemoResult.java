@@ -49,15 +49,11 @@ public class TestDemoResult extends AppCompatActivity {
     TextView isPassedText;
     Result resultObj;
     List<Question> questions = new ArrayList<Question>();
-    Gson gson = new Gson();
-    Integer counter = new Integer(0);
     Button seeAnswers;
     Boolean loaded = false;
     RelativeLayout mainRelativeLayout;
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
     String multipleChoice;
-
-    //String getDemoQuestionsWAURL;
     String name;
 
     @Override
@@ -65,16 +61,12 @@ public class TestDemoResult extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_result);
         Intent intent = getIntent();
-        //getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withAnswers/");
-        //String result = intent.getStringExtra("result");
         String answers = intent.getStringExtra("answers");
-         name = intent.getStringExtra("name");
+        name = intent.getStringExtra("name");
         multipleChoice = intent.getStringExtra("multipleChoice");
         mainRelativeLayout = findViewById(R.id.main);
         isPassedText = findViewById(R.id.textSummaryPos);
         summarry = findViewById(R.id.textSummary);
-
-
         seeAnswers = findViewById(R.id.buttonSeeAnswers);
         seeAnswers.setOnClickListener(new OnClickListener() {
             @Override
@@ -120,7 +112,6 @@ public class TestDemoResult extends AppCompatActivity {
             }
         });
 
-        //new CheckAnswer().execute(name);
         try {
             JSONArray questionsJason = new JSONArray(answers);
             for (int i = 0; i < questionsJason.length(); i++) {
@@ -142,8 +133,6 @@ public class TestDemoResult extends AppCompatActivity {
         resultObj = new Result();
         resultObj.setTotal(0);
         resultObj.setCorrect(0);
-
-
         Integer i = new Integer(1);
         for (Question question : questions) {
             resultObj.setTotal(resultObj.getTotal()+1);
@@ -151,33 +140,17 @@ public class TestDemoResult extends AppCompatActivity {
                 for (int j = 0; j < 4; j++) {
                     if (question.getAnswers().get(j).getStatus()) {
                         if (question.getAnswers().get(j).getValue()) {
-
                         } else {
-
                             positive = false;
                         }
                     } else if (question.getAnswers().get(j).getValue()) {
                         positive = false;
-
                     }
-
                 }
-
-
             if (positive)
                 resultObj.setCorrect(resultObj.getCorrect()+1);
-
-
-
                  i++;
         }
-
-
-
-
-
-
-
         try {
             summarry.setText(getApplicationContext().getString(R.string.summaryGet, resultObj.getCorrect(), resultObj.getTotal(),
                     ((resultObj.getCorrect().floatValue() / resultObj.getTotal().floatValue() * 100.0f)), '%'));
@@ -199,7 +172,6 @@ public class TestDemoResult extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(getApplicationContext().getString((name.equals("demojava")) ? R.string.demojava : R.string.demoweb));
             JSONArray questionsJArray = jsonObject.getJSONArray("questions");
             for (int i = 0; i < questionsJArray.length(); i++) {
-               // Log.e("quiz1",questionsJArray.getJSONObject(i).toString());
                 JSONObject Jquestion = questionsJArray.getJSONObject(i);
                 Question question = new Question(Jquestion);
                 for(int j = 0; j < 4; j++) questions.get(i).getAnswers().get(j).setValue(question.getAnswers().get(j).getStatus());
@@ -211,58 +183,7 @@ public class TestDemoResult extends AppCompatActivity {
         loaded = true;
         seeAnswers.setBackgroundColor(getResources().getColor(R.color.buttonBackgroundGray));
         seeAnswers.setTextColor(getResources().getColor(R.color.blackText));
-        
     }
-/*
-    private class CheckAnswer extends AsyncTask<String, Void, String> {
-        private OkHttpClient mClient = new OkHttpClient();
-
-        protected String doInBackground(String... name) {
-
-            String url = getDemoQuestionsWAURL;
-            try {
-                com.squareup.okhttp.Request request = new Request
-                        .Builder()
-                        .url(url + name[0])
-                        .build();
-                mClient.setProtocols(Arrays.asList(Protocol.HTTP_1_1));
-
-                Response response = mClient.newCall(request).execute();
-                String stringResponse = response.body().string();
-
-                return stringResponse;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-
-        protected void onPostExecute(String response) {
-
-
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray questionsJArray = jsonObject.getJSONArray("questions");
-                for (int i = 0; i < questionsJArray.length(); i++) {
-                    Log.e("quiz1",questionsJArray.getJSONObject(i).toString());
-                    JSONObject Jquestion = questionsJArray.getJSONObject(i);
-                    Question question = new Question(Jquestion);
-                    for(int j = 0; j < 4; j++) questions.get(i).getAnswers().get(j).setValue(question.getAnswers().get(j).getStatus());
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-                seeAnswers.setText(getApplicationContext().getString(R.string.seeAnswers));
-                loaded = true;
-                seeAnswers.setBackgroundColor(getResources().getColor(R.color.buttonBackgroundGray));
-                seeAnswers.setTextColor(getResources().getColor(R.color.blackText));
-
-        }
-    }
-*/
-
     private void showAnswers() {
         Integer i = new Integer(1);
         for (Question question : questions) {
