@@ -1,7 +1,11 @@
 package studia.quiz.model;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Subject {
     private Integer id;
@@ -18,6 +22,7 @@ public class Subject {
     private String course;
     private String description;
     private String subject;
+    private List<Question> questions;
 
     public Subject(JSONObject jsonObject)throws JSONException {
         this.id = (Integer) jsonObject.get("id");
@@ -36,7 +41,13 @@ public class Subject {
             this.description = (String) jsonObject.get("description");
         this.subject = (String) jsonObject.get("subject");
 
-
+        this.questions = new ArrayList<>();
+        JSONArray jsonArray = jsonObject.getJSONArray("questions");
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+            Question question = new Question(jsonObject2,this.id );
+            this.questions.add(question);
+        }
 
 
     }
@@ -144,5 +155,13 @@ public class Subject {
 
     public void setLimitedTime(Boolean limitedTime) {
         this.limitedTime = limitedTime;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }

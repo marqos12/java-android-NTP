@@ -73,6 +73,10 @@ public class TestDemoResult extends AppCompatActivity {
         mainRelativeLayout = findViewById(R.id.main);
         isPassedText = findViewById(R.id.textSummaryPos);
         summarry = findViewById(R.id.textSummary);
+
+        final Button back2Button = findViewById(R.id.buttonBack2);
+        final Button repeat2Button = findViewById(R.id.buttonRepeat2);
+
         try {
             resultObj = new Result(new JSONObject(result));
             summarry.setText(getApplicationContext().getString(R.string.summaryGet, resultObj.getCorrect(), resultObj.getTotal(),
@@ -96,13 +100,15 @@ public class TestDemoResult extends AppCompatActivity {
             public void onClick(View v) {
                 if (loaded) {
                     showAnswers();
+                    back2Button.setVisibility(View.VISIBLE);
+                    repeat2Button.setVisibility(View.VISIBLE);
                 }
             }
         });
         seeAnswers.setBackgroundColor(getResources().getColor(R.color.buttonBackgroundDisable));
         seeAnswers.setTextColor(getResources().getColor(R.color.buttonTextDisable));
 
-        Button backButton = findViewById(R.id.buttonBack);
+        final Button backButton = findViewById(R.id.buttonBack);
         backButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +118,7 @@ public class TestDemoResult extends AppCompatActivity {
             }
         });
 
-        Button repeatButton = findViewById(R.id.buttonRepeat);
+        final Button repeatButton = findViewById(R.id.buttonRepeat);
         repeatButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +138,20 @@ public class TestDemoResult extends AppCompatActivity {
                 intent.putExtra("name", name);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        back2Button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backButton.callOnClick();
+            }
+        });
+
+        repeat2Button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                repeatButton.callOnClick();
             }
         });
 

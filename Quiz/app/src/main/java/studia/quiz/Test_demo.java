@@ -57,7 +57,7 @@ public class Test_demo extends AppCompatActivity {
     Button buttonNext;
     Button buttonPrev;
     Button buttonAccept;
-    List<Question> questions2 = new ArrayList<Question>();
+    //List<Question> questions2 = new ArrayList<Question>();
 
     RelativeLayout mainRelativeLayout;
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
@@ -234,20 +234,20 @@ public class Test_demo extends AppCompatActivity {
             };
             cTimer.start();
 
-            JSONArray jsonArray = null;
+            /*JSONArray jsonArray = null;
             try {
                 jsonArray = jsonObject.getJSONArray("questions");
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject2 = jsonArray.getJSONObject(i);
-                    Question question = new Question(jsonObject2);
+                    Question question = new Question(jsonObject2, );
                     questions2.add(question);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             Integer i = new Integer(1);
-            for (Question question : questions2) {
+            for (Question question : quizDetails.getQuestions()) {
                 RelativeLayout relativeLayout = new RelativeLayout(getApplicationContext());
                 relativeLayout.setId(View.generateViewId());
                 RelativeLayout.LayoutParams rparam = new RelativeLayout.LayoutParams(Resources.getSystem().getDisplayMetrics().widthPixels, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -266,7 +266,7 @@ public class Test_demo extends AppCompatActivity {
                 RelativeLayout.LayoutParams questionNumberParam = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 questionNumberParam.setMargins(0, 20, 0, 0);
                 questionNumber.setLayoutParams(questionNumberParam);
-                questionNumber.setText(i.toString() + "/" + questions2.size());
+                questionNumber.setText(i.toString() + "/" + quizDetails.getQuestions().size());
                 questionNumber.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.quizcard));
                 questionNumber.setTextColor(getResources().getColor(R.color.textWhite));
                 questionNumber.setId(View.generateViewId());
@@ -276,7 +276,7 @@ public class Test_demo extends AppCompatActivity {
                 RelativeLayout.LayoutParams paramsText = new RelativeLayout.LayoutParams(Resources.getSystem().getDisplayMetrics().widthPixels, ViewGroup.LayoutParams.WRAP_CONTENT);
                 paramsText.addRule(RelativeLayout.BELOW, questionNumber.getId());
                 questionText.setLayoutParams(paramsText);
-                questionText.setText(questions2.get(i - 1).getText());
+                questionText.setText(quizDetails.getQuestions().get(i - 1).getText());
                 questionText.setTextSize(16);
                 questionText.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.quizcard));
                 questionText.setTextColor(getResources().getColor(R.color.textWhite));
@@ -297,7 +297,7 @@ public class Test_demo extends AppCompatActivity {
                         paramsAnswer1.setMargins(0, 10, 0, 0);
                         answer1.setLayoutParams(paramsAnswer1);
                         answer1.setId(View.generateViewId());
-                        answer1.setText(questions2.get(i - 1).getAnswers().get(j).getText());
+                        answer1.setText(quizDetails.getQuestions().get(i - 1).getAnswers().get(j).getText());
                         answer1.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.quizcard));
                         radioGroup.addView(answer1);
                     }
@@ -308,21 +308,21 @@ public class Test_demo extends AppCompatActivity {
                         paramsAnswer1.setMargins(0, 10, 0, 0);
                         answer1.setLayoutParams(paramsAnswer1);
                         answer1.setId(View.generateViewId());
-                        answer1.setText(questions2.get(i - 1).getAnswers().get(j).getText());
+                        answer1.setText(quizDetails.getQuestions().get(i - 1).getAnswers().get(j).getText());
                         answer1.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.quizcard));
                         radioGroup.addView(answer1);
                     }
                 }
                 relativeLayout.addView(radioGroup);
 
-                if (questions2.get(i - 1).getCode() != null) {
+                if (quizDetails.getQuestions().get(i - 1).getCode() != null) {
                     TextView questionCode = new TextView(getApplicationContext());
                     RelativeLayout.LayoutParams paramsCode = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     paramsCode.addRule(RelativeLayout.BELOW, questionText.getId());
                     paramsCode.setMargins(0, 10, 0, 0);
                     questionCode.setLayoutParams(paramsCode);
                     questionCode.setTextColor(getResources().getColor(R.color.codeBorder));
-                    questionCode.setText(questions2.get(i - 1).getCode());
+                    questionCode.setText(quizDetails.getQuestions().get(i - 1).getCode());
                     questionCode.setTextSize(14);
                     questionCode.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.codecard));
                     questionCode.setId(View.generateViewId());
@@ -331,7 +331,7 @@ public class Test_demo extends AppCompatActivity {
                     radioGroup.setLayoutParams(paramsText2);
                 }
 
-                if (questions2.get(i - 1).getImage() != null) {
+                if (quizDetails.getQuestions().get(i - 1).getImage() != null) {
                     ImageView questionImage = new ImageView(getApplicationContext());
                     RelativeLayout.LayoutParams paramsImage = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     paramsImage.addRule(RelativeLayout.BELOW, questionText.getId());
@@ -339,7 +339,7 @@ public class Test_demo extends AppCompatActivity {
                     questionImage.setLayoutParams(paramsImage);
                     questionImage.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.codecard));
                     questionImage.setId(View.generateViewId());
-                    new DownloadImageTask(questionImage).execute(questions2.get(i - 1).getImage());
+                    new DownloadImageTask(questionImage).execute(quizDetails.getQuestions().get(i - 1).getImage());
                     relativeLayout.addView(questionImage);
                     paramsText2.addRule(RelativeLayout.BELOW, questionImage.getId());
                     radioGroup.setLayoutParams(paramsText2);
@@ -546,21 +546,22 @@ public class Test_demo extends AppCompatActivity {
                 for (int i = 0; i < 4; i++) {
                     RadioButton radioButton = (RadioButton) radio.getChildAt(i);
                     if (radioButton.isChecked())
-                        questions2.get(index).getAnswers().get(i).setStatus(true);
-                    else questions2.get(index).getAnswers().get(i).setStatus(false);
+                        quizDetails.getQuestions().get(index).getAnswers().get(i).setStatus(true);
+                    else quizDetails.getQuestions().get(index).getAnswers().get(i).setStatus(false);
                 }
             } else {
                 for (int i = 0; i < 4; i++) {
                     CheckBox radioButton = (CheckBox) radio.getChildAt(i);
                     if (radioButton.isChecked())
-                        questions2.get(index).getAnswers().get(i).setStatus(true);
-                    else questions2.get(index).getAnswers().get(i).setStatus(false);
+                        quizDetails.getQuestions().get(index).getAnswers().get(i).setStatus(true);
+                    else quizDetails.getQuestions().get(index).getAnswers().get(i).setStatus(false);
                 }
             }
             index++;
         }
 
-        String questionsJson = gson.toJson(questions2);
+        String questionsJson = gson.toJson(quizDetails.getQuestions());
+        Log.e("quiz11",questionsJson);
         FileOutputStream outputStream;
         try {
             outputStream = openFileOutput("quizAnswers", Context.MODE_PRIVATE);
@@ -570,7 +571,7 @@ public class Test_demo extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        new CheckAnswers().execute(questions2);
+        new CheckAnswers().execute(quizDetails.getQuestions());
         progress = ProgressDialog.show(Test_demo.this, "Sprawdzanie odpowiedzi ...", "Oczekowanie na dane...", true);
 
     }
@@ -581,7 +582,7 @@ public class Test_demo extends AppCompatActivity {
 
         protected String doInBackground(List<Question>... answers) {
             String url = checkAnswersURL;
-
+            Log.e("quiz1",gson.toJson(answers[0]));
             RequestBody requestBody = RequestBody.create(JSON, gson.toJson(answers[0]));
             try {
                 com.squareup.okhttp.Request request = new Request
@@ -605,7 +606,7 @@ public class Test_demo extends AppCompatActivity {
             Intent intent = new Intent(Test_demo.this, TestDemoResult.class);
             intent.putExtra("result", result);
             intent.putExtra("name", name);
-            intent.putExtra("answers", gson.toJson(questions2));
+            intent.putExtra("answers", gson.toJson(quizDetails.getQuestions()));
             intent.putExtra("multipleChoice", multipleChoice);
             startActivity(intent);
             finish();

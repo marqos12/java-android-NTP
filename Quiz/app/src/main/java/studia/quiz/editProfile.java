@@ -177,6 +177,8 @@ public class editProfile extends AppCompatActivity {
                     userN.setCourse(course.getText().toString());
                     userN.setName(name.getText().toString());
                     userN.setSurname(surname.getText().toString());
+
+                    userN.setRole("user");
                     new EditUser().execute(userN);
                     loginFailed.setText("");
                     inProgress.setVisibility(View.VISIBLE);

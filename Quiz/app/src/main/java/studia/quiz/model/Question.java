@@ -18,10 +18,28 @@ public class Question {
     private String image;
     private List<Answer> answers;
 
-    public Question(JSONObject jsonObject)throws JSONException {
+    public Question(JSONObject jsonObject,Integer id)throws JSONException {
         this.id = (Integer) jsonObject.get("id");
        // this.category = (String) jsonObject.get("category");
-//        this.idSubject = (Integer) jsonObject.get("idSubject");
+        this.idSubject =  id;
+        this.text = (String) jsonObject.get("text");
+        if (jsonObject.optString("code").toString()!="null"&&jsonObject.optString("code").toString()!="")
+            this.code = (String) jsonObject.get("code");
+        if (jsonObject.optString("image").toString()!="null"&&jsonObject.optString("image").toString()!="")
+            this.image = (String) jsonObject.get("image");
+        JSONArray jsonArray = (JSONArray) jsonObject.get("answers");
+        this.answers = new ArrayList<Answer>();
+        this.answers.add(new Answer(jsonArray.getJSONObject(0)));
+        this.answers.add(new Answer(jsonArray.getJSONObject(1)));
+        this.answers.add(new Answer(jsonArray.getJSONObject(2)));
+        this.answers.add(new Answer(jsonArray.getJSONObject(3)));
+    }
+
+    public Question(JSONObject jsonObject)throws JSONException {
+        this.id = (Integer) jsonObject.get("id");
+        // this.category = (String) jsonObject.get("category");
+        if(jsonObject.has("idSubject"))
+            this.idSubject =  jsonObject.getInt("idSubject");
         this.text = (String) jsonObject.get("text");
         if (jsonObject.optString("code").toString()!="null"&&jsonObject.optString("code").toString()!="")
             this.code = (String) jsonObject.get("code");

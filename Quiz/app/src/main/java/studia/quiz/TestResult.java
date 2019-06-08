@@ -72,6 +72,9 @@ String JWT;
         mainRelativeLayout = findViewById(R.id.main);
         isPassedText = findViewById(R.id.textSummaryPos);
         summarry = findViewById(R.id.textSummary);
+        final Button back2Button = findViewById(R.id.buttonBack2);
+        final Button repeat2Button = findViewById(R.id.buttonRepeat2);
+
         try {
             resultObj = new Result(new JSONObject(result));
             summarry.setText(getApplicationContext().getString(R.string.summaryGet, resultObj.getCorrect(), resultObj.getTotal(),
@@ -95,13 +98,16 @@ String JWT;
             public void onClick(View v) {
                 if (loaded) {
                     showAnswers();
+
+                    back2Button.setVisibility(View.VISIBLE);
+                    repeat2Button.setVisibility(View.VISIBLE);
                 }
             }
         });
         seeAnswers.setBackgroundColor(getResources().getColor(R.color.buttonBackgroundDisable));
         seeAnswers.setTextColor(getResources().getColor(R.color.buttonTextDisable));
 
-        Button backButton = findViewById(R.id.buttonBack);
+        final Button backButton = findViewById(R.id.buttonBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +127,7 @@ String JWT;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Button repeatButton = findViewById(R.id.buttonRepeat);
+        final Button repeatButton = findViewById(R.id.buttonRepeat);
         final String finalName = name;
         repeatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +139,20 @@ String JWT;
                 intent.putExtra("jwt", JWT);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        back2Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backButton.callOnClick();
+            }
+        });
+
+        repeat2Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                repeatButton.callOnClick();
             }
         });
 
