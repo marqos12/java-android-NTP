@@ -75,7 +75,7 @@ public class Test_demo extends AppCompatActivity {
     Gson gson = new Gson();
     Boolean collapsedRules = true;
 
-    String checkAnswersURL ;
+    //String checkAnswersURL ;
     //String getDemoDetailsURL ;
     //String getQuestionsURL ;
 
@@ -90,7 +90,7 @@ public class Test_demo extends AppCompatActivity {
         separatePage = intent.getStringExtra("separatePage");
         multipleChoice = intent.getStringExtra("multipleChoice");
 
-        checkAnswersURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/result");
+        //checkAnswersURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/result");
         //getDemoDetailsURL =getApplicationContext().getString(R.string.url, "/api/demo/details/");
         //getQuestionsURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withoutAnswers/");
         AndroidGestureDectector androidGestureDectector = new AndroidGestureDectector();
@@ -739,13 +739,20 @@ public class Test_demo extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        new CheckAnswers().execute(questions2);
-        progress = ProgressDialog.show(Test_demo.this, "Sprawdzanie odpowiedzi ...", "Oczekowanie na dane...", true);
+        Intent intent = new Intent(Test_demo.this, TestDemoResult.class);
+        //intent.putExtra("result", result);
+        intent.putExtra("name", name);
+        intent.putExtra("answers", gson.toJson(questions2));
+        intent.putExtra("multipleChoice", multipleChoice);
+        startActivity(intent);
+        finish();
+        //progress.dismiss();
+        //new CheckAnswers().execute(questions2);
+        //progress = ProgressDialog.show(Test_demo.this, "Sprawdzanie odpowiedzi ...", "Oczekowanie na dane...", true);
 
     }
 
-
+/*
     private class CheckAnswers extends AsyncTask<List<Question>, Void, String> {
         private OkHttpClient mClient = new OkHttpClient();
 
@@ -782,6 +789,7 @@ public class Test_demo extends AppCompatActivity {
             progress.dismiss();
         }
     }
+    */
 /*
     private class GetQuizDetails extends AsyncTask<String, Void, Subject> {
         private OkHttpClient mClient = new OkHttpClient();

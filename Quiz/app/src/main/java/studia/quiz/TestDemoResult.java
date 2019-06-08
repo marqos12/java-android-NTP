@@ -57,7 +57,7 @@ public class TestDemoResult extends AppCompatActivity {
     List<RelativeLayout> allRLayouts = new ArrayList<RelativeLayout>();
     String multipleChoice;
 
-    String getDemoQuestionsWAURL;
+    //String getDemoQuestionsWAURL;
     String name;
 
     @Override
@@ -65,30 +65,15 @@ public class TestDemoResult extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_demo_result);
         Intent intent = getIntent();
-        getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withAnswers/");
-        String result = intent.getStringExtra("result");
+        //getDemoQuestionsWAURL =getApplicationContext().getString(R.string.url, "/api/subjects/demo/withAnswers/");
+        //String result = intent.getStringExtra("result");
         String answers = intent.getStringExtra("answers");
          name = intent.getStringExtra("name");
         multipleChoice = intent.getStringExtra("multipleChoice");
         mainRelativeLayout = findViewById(R.id.main);
         isPassedText = findViewById(R.id.textSummaryPos);
         summarry = findViewById(R.id.textSummary);
-        try {
-            resultObj = new Result(new JSONObject(result));
-            summarry.setText(getApplicationContext().getString(R.string.summaryGet, resultObj.getCorrect(), resultObj.getTotal(),
-                    ((resultObj.getCorrect().floatValue() / resultObj.getTotal().floatValue() * 100.0f)), '%'));
-            if ((resultObj.getCorrect().floatValue() / resultObj.getTotal().floatValue()) > 0.5f) {
-                isPassedText.setText(getApplicationContext().getString(R.string.summaryPositive));
-                isPassedText.setTextColor(getResources().getColor(R.color.textPositive));
-            } else {
-                isPassedText.setText(getApplicationContext().getString(R.string.summaryNegative));
-                isPassedText.setTextColor(getResources().getColor(R.color.textNegative));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         seeAnswers = findViewById(R.id.buttonSeeAnswers);
         seeAnswers.setOnClickListener(new OnClickListener() {
@@ -135,7 +120,7 @@ public class TestDemoResult extends AppCompatActivity {
             }
         });
 
-        new CheckAnswer().execute(name);
+        //new CheckAnswer().execute(name);
         try {
             JSONArray questionsJason = new JSONArray(answers);
             for (int i = 0; i < questionsJason.length(); i++) {
@@ -147,9 +132,88 @@ public class TestDemoResult extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        checkAnswers();
+        checkResult();
     }
 
 
+    void checkResult(){
+
+        resultObj = new Result();
+        resultObj.setTotal(0);
+        resultObj.setCorrect(0);
+
+
+        Integer i = new Integer(1);
+        for (Question question : questions) {
+            resultObj.setTotal(resultObj.getTotal()+1);
+            Boolean positive = true;
+                for (int j = 0; j < 4; j++) {
+                    if (question.getAnswers().get(j).getStatus()) {
+                        if (question.getAnswers().get(j).getValue()) {
+
+                        } else {
+
+                            positive = false;
+                        }
+                    } else if (question.getAnswers().get(j).getValue()) {
+                        positive = false;
+
+                    }
+
+                }
+
+
+            if (positive)
+                resultObj.setCorrect(resultObj.getCorrect()+1);
+
+
+
+                 i++;
+        }
+
+
+
+
+
+
+
+        try {
+            summarry.setText(getApplicationContext().getString(R.string.summaryGet, resultObj.getCorrect(), resultObj.getTotal(),
+                    ((resultObj.getCorrect().floatValue() / resultObj.getTotal().floatValue() * 100.0f)), '%'));
+            if ((resultObj.getCorrect().floatValue() / resultObj.getTotal().floatValue()) > 0.5f) {
+                isPassedText.setText(getApplicationContext().getString(R.string.summaryPositive));
+                isPassedText.setTextColor(getResources().getColor(R.color.textPositive));
+            } else {
+                isPassedText.setText(getApplicationContext().getString(R.string.summaryNegative));
+                isPassedText.setTextColor(getResources().getColor(R.color.textNegative));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    void checkAnswers(){
+        try {
+            JSONObject jsonObject = new JSONObject(getApplicationContext().getString((name.equals("demojava")) ? R.string.demojava : R.string.demoweb));
+            JSONArray questionsJArray = jsonObject.getJSONArray("questions");
+            for (int i = 0; i < questionsJArray.length(); i++) {
+               // Log.e("quiz1",questionsJArray.getJSONObject(i).toString());
+                JSONObject Jquestion = questionsJArray.getJSONObject(i);
+                Question question = new Question(Jquestion);
+                for(int j = 0; j < 4; j++) questions.get(i).getAnswers().get(j).setValue(question.getAnswers().get(j).getStatus());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        seeAnswers.setText(getApplicationContext().getString(R.string.seeAnswers));
+        loaded = true;
+        seeAnswers.setBackgroundColor(getResources().getColor(R.color.buttonBackgroundGray));
+        seeAnswers.setTextColor(getResources().getColor(R.color.blackText));
+        
+    }
+/*
     private class CheckAnswer extends AsyncTask<String, Void, String> {
         private OkHttpClient mClient = new OkHttpClient();
 
@@ -197,7 +261,7 @@ public class TestDemoResult extends AppCompatActivity {
 
         }
     }
-
+*/
 
     private void showAnswers() {
         Integer i = new Integer(1);
