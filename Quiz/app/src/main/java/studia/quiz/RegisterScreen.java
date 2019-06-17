@@ -49,7 +49,13 @@ public class RegisterScreen extends AppCompatActivity {
         setContentView(R.layout.activity_register_screen);
 
 
-
+        registerURL =getApplicationContext().getString(R.string.url, "/api/register");
+         name = findViewById(R.id.name);
+         surname = findViewById(R.id.surname);
+         email= findViewById(R.id.login);
+         course=findViewById(R.id.course);
+         password=findViewById(R.id.password);
+         confirmPassword=findViewById(R.id.passwordConfirmed);
 
 
 

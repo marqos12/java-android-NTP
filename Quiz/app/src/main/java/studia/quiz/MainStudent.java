@@ -86,7 +86,7 @@ public class MainStudent extends AppCompatActivity {
             startActivity(intent);
         }
 
-        Button editProfile = findViewById(R.id.editProfileBtn);
+       /* Button editProfile = findViewById(R.id.editProfileBtn);
         final String finalUserString = userString;
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +97,7 @@ public class MainStudent extends AppCompatActivity {
                 startActivity(intent);
 
             }
-        });
+        });*/
 
 
 
