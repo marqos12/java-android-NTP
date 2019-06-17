@@ -81,7 +81,7 @@ public class TestDemoResult extends AppCompatActivity {
             resultObj = new Result(new JSONObject(result));
             summarry.setText(getApplicationContext().getString(R.string.summaryGet, resultObj.getCorrect(), resultObj.getTotal(),
                     ((resultObj.getCorrect().floatValue() / resultObj.getTotal().floatValue() * 100.0f)), '%'));
-            if ((resultObj.getCorrect().floatValue() / resultObj.getTotal().floatValue()) > 0.5f) {
+            if ((resultObj.getCorrect().floatValue() / resultObj.getTotal().floatValue()) > 0.6f) {
                 isPassedText.setText(getApplicationContext().getString(R.string.summaryPositive));
                 isPassedText.setTextColor(getResources().getColor(R.color.textPositive));
             } else {

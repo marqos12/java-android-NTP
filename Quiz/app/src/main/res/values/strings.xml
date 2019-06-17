@@ -41,7 +41,7 @@
     <string name="editted">Edycja udana</string>
     <string name="relogin">Wymagane ponowne zalogowanie się</string>
 
-    <string name="url">http://192.168.0.104:8080%s</string>
+    <string name="url">http://192.168.43.89:8080%s</string>
 
     <string name="test">%d</string>
     <string name="title_activity_login">Sign in</string>
